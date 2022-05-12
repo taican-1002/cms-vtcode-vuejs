@@ -76,11 +76,16 @@
                   required
                 >
                   <option selected disabled value="">Select Author</option>
-                  <option value="Admin">Admin</option>
+                  <option value="admin">Admin</option>
                 </select>
               </div>
               <div class="mb-3">
-                <QuillEditor theme="snow" toolbar="full" />
+                <QuillEditor
+                  v-model:content="quill"
+                  contentType="html"
+                  theme="snow"
+                  toolbar="full"
+                />
               </div>
 
               <div class="mb-3">
@@ -118,18 +123,26 @@ import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import noImage from "../../../assets/img/no-image.png";
 import ButtonAdd from "@/examples/ButtonAction/ButtonAdd.vue";
 import { mapGetters } from "vuex";
-
 export default {
   name: "add-blog",
   computed: mapGetters(["categories"]),
-
+  watch: {
+    quill() {
+      console.log(this.quill);
+    },
+  },
+  mounted() {
+    this.quill = this.blog.description;
+  },
   data() {
     return {
+      quill: "",
       blog: {
         title: "",
         category: {},
         author: "",
         image: "",
+        description: "",
         createDate: "",
       },
       showModal: false,
@@ -146,19 +159,21 @@ export default {
       const objCategory = this.categories.filter(
         (item) => item.id == formSelectCategory.value
       );
+
       if (this.blog.title != "" && this.blog.title.trim()) {
         this.addBlog({
           id: this.blog.id,
           title: this.blog.title,
           category: objCategory[0],
           author: formSelectAuthor.value,
+          description: this.quill,
           image: this.previewImage,
           createDate: this.currentDateTime(),
         });
         this.showModal = false;
+        // console.log(this.blog.description);
       }
-      console.log(objCategory);
-      console.log(formSelectCategory.value);
+
       this.blog.id = "";
       this.blog.title = "";
       this.blog.category = "";

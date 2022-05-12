@@ -244,7 +244,7 @@ export default {
   overflow-y: initial !important;
 }
 .modal-body__footer {
-  height: 80vh;
+  max-height: 80vh;
   overflow-y: auto;
 }
 .modal-wrapper {

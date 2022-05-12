@@ -3,36 +3,29 @@ import bootstrap from "bootstrap/dist/js/bootstrap.min.js";
 import userModule from "./modules/UserModule";
 import categoryModule from "./modules/CategoryModule";
 import blogModule from "./modules/BlogModule";
+import bannerModule from "./modules/BannerModule";
 import staffModule from "./modules/StaffModule";
+import contactModule from "./modules/ContactModule";
 import partnerModule from "./modules/PartnerModule";
 import footerModule from "./modules/FooterModule";
 
 export default createStore({
   modules: {
     userModule,
+    bannerModule,
     categoryModule,
     blogModule,
     staffModule,
+    contactModule,
     partnerModule,
     footerModule,
   },
   state: {
-    category: [
-      {
-        id: 1,
-        name: "Sản phẩm",
-        seo: "san-pham",
-      },
-      {
-        id: 2,
-        name: "Dịch vụ",
-        seo: "dich-vu",
-      },
-    ],
     hideConfigButton: false,
     isPinned: true,
     showConfig: false,
     isTransparent: "",
+    isWhite: "",
     isRTL: false,
     color: "",
     isNavFixed: false,
@@ -71,7 +64,7 @@ export default createStore({
       // }
     },
     sidebarType(state, payload) {
-      state.isTransparent = payload;
+      state.isWhite = payload;
     },
     cardBackground(state, payload) {
       state.color = payload;

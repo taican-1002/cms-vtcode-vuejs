@@ -1,5 +1,10 @@
 <template>
-  <router-link class="nav-link" :to="to" v-bind="$attrs">
+  <router-link
+    class="nav-link"
+    :to="to"
+    v-bind="$attrs"
+    @click="navbarMinimize"
+  >
     <div
       class="text-center bg-white shadow icon icon-shape icon-sm border-radius-md d-flex align-items-center justify-content-center"
       :class="this.$store.state.isRTL ? ' ms-2' : 'me-2'"
@@ -14,8 +19,13 @@
   </router-link>
 </template>
 <script>
+import { mapMutations } from "vuex";
+
 export default {
   name: "sidenav-collapse",
+  methods: {
+    ...mapMutations(["navbarMinimize"]),
+  },
   props: {
     to: {
       type: [Object, String],

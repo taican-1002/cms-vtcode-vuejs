@@ -9,10 +9,11 @@ const blogModule = {
         createDate: "6/5/2022",
         category: {
           id: 1,
-          name: "Sản phẩm",
-          seo: "san-pham",
+          name: "Dự án",
+          seo: "du-an",
         },
         author: "admin",
+        description: "",
         image:
           "https://hoangtrinh666.github.io/vtcode-template/images/pro1.jpg",
       },
@@ -26,6 +27,7 @@ const blogModule = {
           seo: "dich-vu",
         },
         author: "admin",
+        description: "",
         image:
           "https://hoangtrinh666.github.io/vtcode-template/images/service1.webp",
       },

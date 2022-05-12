@@ -64,6 +64,7 @@
                   {{ item.title }}
                 </p>
               </td>
+
               <td class="align-middle text-center text-sm">
                 {{ item.category.name }}
               </td>
@@ -78,7 +79,7 @@
               </td>
               <td class="align-middle text-center">
                 <EditBlog :blog="item" />
-                <DeleteBlog />
+                <DeleteBlog :blog="item" />
               </td>
             </tr>
           </tbody>
@@ -110,13 +111,17 @@ export default {
   padding: 0.75rem 1rem !important;
 }
 .blog-post__title {
-  max-width: 10rem;
+  max-width: 20rem;
+  height: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: break-spaces;
 }
-.blog-post__title p {
+/* .blog-post__title p {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
+} */
 .blog-post__img {
   width: 50px;
   height: 50px;

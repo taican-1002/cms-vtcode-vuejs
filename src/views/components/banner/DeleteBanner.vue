@@ -7,7 +7,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Delete Blog</h5>
+              <h5 class="modal-title">Delete Banner</h5>
               <button
                 type="button"
                 class="close"
@@ -18,7 +18,7 @@
               </button>
             </div>
             <div class="modal-body">
-              <div class="mb-3">Bạn có chắc muốn xóa Blog này ?</div>
+              <div class="mb-3">Bạn có chắc muốn xóa banner này ?</div>
             </div>
             <div class="modal-footer">
               <button
@@ -31,7 +31,7 @@
               <button
                 type="button"
                 class="btn btn-primary"
-                @click="handleDeleteBlog"
+                @click="handleDeleteUser"
               >
                 DELETE
               </button>
@@ -48,25 +48,27 @@ import { mapActions } from "vuex";
 import ButtonDelete from "@/examples/ButtonAction/ButtonDelete";
 
 export default {
-  name: "DeleteBlog",
+  name: "DeleteUser",
   components: { ButtonDelete },
   data() {
     return {
-      blogDelete: {
-        id: this.blog.id,
-        title: this.blog.title,
+      bannerDelete: {
+        id: this.banner.id,
+        slogan: this.banner.slogan,
+        description: this.banner.description,
       },
       showModal: false,
     };
   },
-  props: ["blog"],
+  props: ["banner"],
   methods: {
-    ...mapActions(["deleteBlogAction"]),
+    ...mapActions(["deleteBanner"]),
     handleDelete() {
       this.showModal = true;
     },
-    handleDeleteBlog() {
-      this.deleteBlogAction(this.blogDelete);
+    handleDeleteUser(e) {
+      e.preventDefault();
+      this.deleteBanner(this.bannerDelete);
     },
   },
 };

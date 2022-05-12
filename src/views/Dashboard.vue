@@ -47,6 +47,7 @@ import BlogPost from "./components/blog/BlogPost.vue";
 import Category from "./components/category/Category.vue";
 import Staff from "./components/staff/Staff.vue";
 import Partner from "./components/partner/Partner.vue";
+import Contact from "./components/contact/Contact.vue";
 
 export default {
   name: "blog-post",
@@ -54,6 +55,7 @@ export default {
     BlogPost,
     Category,
     Staff,
+    Contact,
     Partner,
   },
   data() {

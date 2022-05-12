@@ -2,7 +2,7 @@
   <sidenav
     :custom_class="this.$store.state.mcolor"
     :class="[
-      this.$store.state.isTransparent,
+      this.$store.state.isWhite,
       this.$store.state.isRTL ? 'fixed-end' : 'fixed-start',
     ]"
     v-if="this.$store.state.showSidenav"
@@ -60,14 +60,27 @@ export default {
     },
   },
   beforeMount() {
-    this.$store.state.isTransparent = "bg-transparent";
+    this.$store.state.isWhite = "bg-white";
   },
 };
 </script>
 
 <style>
+.g-sidenav-show:not(.rtl) .sidenav {
+  transform: translateX(-17.125rem);
+}
+.g-sidenav-show.g-sidenav-pinned .sidenav {
+  transform: translateX(0);
+}
+.sidenav.fixed-start ~ .main-content {
+  margin-left: 0 !important;
+}
 button {
   border: none;
+}
+.ql-toolbar.ql-snow {
+  display: flex;
+  flex-wrap: wrap;
 }
 @media only screen and (max-width: 600px) {
   .configurator {

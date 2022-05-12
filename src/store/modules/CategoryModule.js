@@ -5,8 +5,8 @@ const categoryModule = {
     categories: [
       {
         id: 1,
-        name: "Sản phẩm",
-        seo: "san-pham",
+        name: "Dự án",
+        seo: "du-an",
       },
       {
         id: 2,

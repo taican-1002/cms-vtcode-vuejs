@@ -7,7 +7,7 @@
         <div class="modal-dialog modal-xl" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Edit Blog</h5>
+              <h5 class="modal-title">Edit Banner</h5>
               <button
                 type="button"
                 class="close"
@@ -23,7 +23,7 @@
                 <input
                   type="text"
                   class="form-control"
-                  v-model="blogEdit.id"
+                  v-model="bannerEdit.id"
                   disabled
                 />
               </div>
@@ -35,7 +35,7 @@
                   >
                     Image Preview
                   </div>
-                  <img :src="previewImage" class="edit-blog_img" />
+                  <img :src="previewImage" class="edit-banner_img" />
                 </div>
                 <input
                   type="file"
@@ -46,63 +46,21 @@
                 />
               </div>
               <div class="mb-3 text-left">
-                <label class="form-label">Title</label>
+                <label class="form-label">Slogan</label>
                 <input
                   type="text"
                   class="form-control"
-                  v-model="blogEdit.title"
+                  v-model="bannerEdit.slogan"
                   required
                 />
               </div>
-
               <div class="mb-3 text-left">
-                <label class="form-label">Category</label>
-                <select
-                  class="form-select form-category"
-                  id="validationDefault04"
-                  required
-                >
-                  <option disabled value="">Select Category</option>
-                  <option
-                    v-for="item in categories"
-                    class="select-option"
-                    :key="item.id"
-                    :value="item.id"
-                    :selected="item.id === blogEdit.category.id"
-                  >
-                    {{ item.name }}
-                  </option>
-                </select>
-              </div>
-              <div class="mb-3 text-left">
-                <label for="validationDefault04" class="form-label"
-                  >Author</label
-                >
-                <select
-                  class="form-select form-author"
-                  id="validationDefault04"
-                  required
-                >
-                  <option selected disabled value="">Select Author</option>
-                  <option value="Admin">Admin</option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <QuillEditor
-                  v-model:content="blogEdit.description"
-                  contentType="html"
-                  theme="snow"
-                  toolbar="full"
-                />
-              </div>
-              <div class="mb-3 text-left">
-                <label class="form-label">Create Date</label>
+                <label class="form-label">Description</label>
                 <input
                   type="text"
                   class="form-control"
-                  v-model="blogEdit.createDate"
+                  v-model="bannerEdit.description"
                   required
-                  disabled
                 />
               </div>
             </div>
@@ -133,46 +91,32 @@
 <script>
 import { mapActions } from "vuex";
 import ButtonEdit from "@/examples/ButtonAction/ButtonEdit.vue";
-import { mapGetters } from "vuex";
-import { QuillEditor } from "@vueup/vue-quill";
-import "@vueup/vue-quill/dist/vue-quill.snow.css";
 
 export default {
   name: "edit-staff",
-  components: { QuillEditor, ButtonEdit },
-  computed: mapGetters(["categories"]),
-  mounted() {
-    console.log(this.blogEdit.description);
-  },
+  components: { ButtonEdit },
+
   data() {
     return {
-      blogEdit: {
-        id: this.blog.id,
-        title: this.blog.title,
-        category: this.blog.category,
-        description: this.blog.description,
-        author: this.blog.author,
-        image: this.blog.image,
-        createDate: this.blog.createDate,
+      bannerEdit: {
+        id: this.banner.id,
+        slogan: this.banner.slogan,
+        description: this.banner.description,
+        image: this.banner.image,
       },
       showModal: false,
-      previewImage: this.blog.image,
+      previewImage: this.banner.image,
     };
   },
-  props: ["blog"],
+  props: ["banner"],
   methods: {
-    ...mapActions(["editBlogAction"]),
+    ...mapActions(["editBanner"]),
     handleEdit() {
       this.showModal = true;
     },
     handleSaveEdit(e) {
       e.preventDefault();
-      const formCategory = document.querySelector(".form-category");
-      const objCategory = this.categories.filter(
-        (item) => item.id == formCategory.value
-      );
 
-      this.blogEdit.category = objCategory[0];
       this.blogEdit.image = this.previewImage;
       this.editBlogAction(this.blogEdit);
       this.showModal = false;
@@ -231,15 +175,15 @@ export default {
   /* vertical-align: middle; */
 }
 
-.edit-blog_img {
-  width: 10rem;
-  height: 10rem;
-  /* border-radius: 100%; */
+.edit-banner_img {
+  width: 30rem;
+  height: 20rem;
+  object-fit: contain;
   display: flex;
   margin: auto;
 }
 @media only screen and (max-width: 600px) {
-  .edit-blog_img {
+  .edit-banner_img {
     width: 14rem;
     height: 14rem;
   }

@@ -1,5 +1,5 @@
 <template>
-  <div class="container top-0 position-sticky z-index-sticky">
+  <!-- <div class="container top-0 position-sticky z-index-sticky">
     <div class="row">
       <div class="col-12">
         <navbar
@@ -9,7 +9,7 @@
         />
       </div>
     </div>
-  </div>
+  </div> -->
   <main class="mt-0 main-content main-content-bg">
     <section>
       <div class="page-header min-vh-75">
@@ -18,10 +18,10 @@
             <div class="mx-auto col-xl-4 col-lg-5 col-md-6 d-flex flex-column">
               <div class="mt-8 card card-plain">
                 <div class="pb-0 card-header text-start">
-                  <h3 class="font-weight-bolder text-success text-gradient">
-                    Welcome back
-                  </h3>
-                  <p class="mb-0">Enter your email and password to sign in</p>
+                  <h1 class="font-weight-bolder text-success text-gradient">
+                    Login
+                  </h1>
+                  <!-- <p class="mb-0">Enter your email and password to sign in</p> -->
                 </div>
                 <div class="card-body">
                   <form role="form" class="text-start">
@@ -43,23 +43,25 @@
                       Remember me
                     </vsud-switch>
                     <div class="text-center">
-                      <vsud-button
-                        class="my-4 mb-2"
-                        variant="gradient"
-                        color="success"
-                        full-width
-                        >Sign in
-                      </vsud-button>
+                      <router-link :to="{ name: '/' }"
+                        ><vsud-button
+                          class="my-4 mb-2"
+                          variant="gradient"
+                          color="success"
+                          full-width
+                          >Sign in
+                        </vsud-button>
+                      </router-link>
                     </div>
                   </form>
                 </div>
                 <div class="px-1 pt-0 text-center card-footer px-lg-2">
                   <p class="mx-auto mb-4 text-sm">
-                    Don't have an account?
+                    Forgot password ?
                     <router-link
                       :to="{ name: 'Sign Up' }"
                       class="text-success text-gradient font-weight-bold"
-                      >Sign up</router-link
+                      >Change password</router-link
                     >
                   </p>
                 </div>
@@ -89,7 +91,7 @@
 </template>
 
 <script>
-import Navbar from "@/examples/PageLayout/Navbar.vue";
+// import Navbar from "@/examples/PageLayout/Navbar.vue";
 import AppFooter from "@/examples/PageLayout/Footer.vue";
 import VsudInput from "@/components/VsudInput.vue";
 import VsudSwitch from "@/components/VsudSwitch.vue";
@@ -100,7 +102,7 @@ import { mapMutations } from "vuex";
 export default {
   name: "SignIn",
   components: {
-    Navbar,
+    // Navbar,
     AppFooter,
     VsudInput,
     VsudSwitch,

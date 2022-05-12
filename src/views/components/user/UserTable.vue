@@ -25,6 +25,11 @@
                 Password
               </th>
               <th
+                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+              >
+                Role
+              </th>
+              <th
                 class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2"
               >
                 Action
@@ -38,6 +43,7 @@
               </td>
               <td>{{ item.email }}</td>
               <td>{{ item.password }}</td>
+              <td>{{ item.role.name }}</td>
               <td class="table-action">
                 <EditUser :user="item" />
                 <DeleteUser :user="item" />
@@ -51,9 +57,9 @@
 </template>
 
 <script>
-import AddUser from "./AddUser/AddUser.vue";
-import EditUser from "./EditUser/EditUser.vue";
-import DeleteUser from "./DeleteUser/DeleteUser.vue";
+import AddUser from "./AddUser.vue";
+import EditUser from "./EditUser.vue";
+import DeleteUser from "./DeleteUser.vue";
 import { mapGetters } from "vuex";
 
 export default {
