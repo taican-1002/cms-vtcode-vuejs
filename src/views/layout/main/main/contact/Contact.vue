@@ -6,20 +6,18 @@
     </div>
     <div class="card-body px-0 pt-0 pb-2">
       <div class="table-responsive p-0">
-        <table class="table align-items-center justify-content-center mb-0">
-          <thead>
-            <tr>
-              <th
-                v-for="item in thTableContact"
-                :key="item"
-                :class="item.class"
-                @click="sort(item.name)"
-              >
-                {{ item.name }}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
+        <tableCommon>
+          <template v-slot:tableThead>
+            <th
+              v-for="item in thTableContact"
+              :key="item"
+              :class="item.class"
+              @click="sort(item.name)"
+            >
+              {{ item.name }}
+            </th>
+          </template>
+          <template v-slot:tableTbody>
             <tr v-for="item in sortedContact" :key="item.id">
               <td class="table-id">
                 {{ item.id }}
@@ -33,8 +31,8 @@
                 <DeleteContact :contact="item" />
               </td>
             </tr>
-          </tbody>
-        </table>
+          </template>
+        </tableCommon>
       </div>
     </div>
   </div>
@@ -45,20 +43,18 @@
     </div>
     <div class="card-body px-0 pt-0 pb-2">
       <div class="table-responsive p-0">
-        <table class="table align-items-center justify-content-center mb-0">
-          <thead>
-            <tr>
-              <th
-                v-for="item in thTableContactInfo"
-                :key="item"
-                :class="item.class"
-                @click="sortInfo(item.name)"
-              >
-                {{ item.name }}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
+        <tableCommon>
+          <template v-slot:tableThead>
+            <th
+              v-for="item in thTableContactInfo"
+              :key="item"
+              :class="item.class"
+              @click="sortInfo(item.name)"
+            >
+              {{ item.name }}
+            </th>
+          </template>
+          <template v-slot:tableTbody>
             <tr v-for="item in sortedInfo" :key="item.id">
               <td class="table-id">
                 {{ item.id }}
@@ -71,8 +67,8 @@
                 <!-- <DeleteContact :contact="item" /> -->
               </td>
             </tr>
-          </tbody>
-        </table>
+          </template>
+        </tableCommon>
       </div>
     </div>
   </div>
@@ -84,6 +80,7 @@ import EditContact from "./EditContact.vue";
 import EditContactInfo from "./EditContactInfo.vue";
 import DeleteContact from "./DeleteContact.vue";
 import { mapGetters } from "vuex";
+import Table from "../../../../components/common/Table.vue";
 
 export default {
   name: "contact-dashboard",
@@ -93,6 +90,7 @@ export default {
     EditContact,
     EditContactInfo,
     DeleteContact,
+    tableCommon: Table,
   },
   computed: {
     ...mapGetters(["contacts", "contactInfos"]),

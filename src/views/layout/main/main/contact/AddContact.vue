@@ -1,96 +1,90 @@
 <template>
   <ButtonAdd @click="handleToggleModal" />
   <!-- Modal -->
-  <div v-if="showModal" class="modal-wrap">
-    <div class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Add Contact</h5>
-              <button
-                type="button"
-                class="close"
-                aria-label="Close"
-                @click="handleChange"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div class="mb-3">
-                <label class="form-label"
-                  >Name <span style="color: #ff0000">*</span>
-                </label>
-                <input
-                  type="text"
-                  class="form-control"
-                  required
-                  v-model="contact.name"
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label"
-                  >Phone <span style="color: #ff0000">*</span></label
-                >
-                <input
-                  type="text"
-                  id="contact-phone"
-                  class="form-control"
-                  v-model="contact.phone"
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label"
-                  >Email <span style="color: #ff0000">*</span></label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="contact.email"
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label"
-                  >Description <span style="color: #ff0000">*</span></label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="contact.description"
-                  required
-                />
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                @click="showModal = false"
-              >
-                Close
-              </button>
-              <button type="button" class="btn btn-primary" @click="onSubmit">
-                ADD
-              </button>
-            </div>
-          </div>
-        </div>
+
+  <modal v-if="showModal">
+    <template v-slot:header>
+      <h5 class="modal-title">Add Contact</h5>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        @click="handleChange"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </template>
+    <template v-slot:body>
+      <div class="mb-3">
+        <label class="form-label"
+          >Name <span style="color: #ff0000">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          required
+          v-model="contact.name"
+        />
       </div>
-    </div>
-  </div>
+      <div class="mb-3">
+        <label class="form-label"
+          >Phone <span style="color: #ff0000">*</span></label
+        >
+        <input
+          type="text"
+          id="contact-phone"
+          class="form-control"
+          v-model="contact.phone"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label"
+          >Email <span style="color: #ff0000">*</span></label
+        >
+        <input
+          type="text"
+          class="form-control"
+          v-model="contact.email"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label"
+          >Description <span style="color: #ff0000">*</span></label
+        >
+        <input
+          type="text"
+          class="form-control"
+          v-model="contact.description"
+          required
+        />
+      </div>
+    </template>
+    <template v-slot:footer>
+      <button
+        type="button"
+        class="btn btn-secondary"
+        @click="showModal = false"
+      >
+        Close
+      </button>
+      <button type="button" class="btn btn-primary" @click="onSubmit">
+        ADD
+      </button>
+    </template>
+  </modal>
 </template>
 
 <script>
 import { mapActions } from "vuex";
 import ButtonAdd from "@/examples/ButtonAction/ButtonAdd.vue";
 import { useToast } from "vue-toastification";
+import Modal from "../../../../components/common/Modal.vue";
 
 export default {
   name: "AddStaff",
-  components: { ButtonAdd },
+  components: { ButtonAdd, modal: Modal },
   setup() {
     // Get toast interface
     const toast = useToast();

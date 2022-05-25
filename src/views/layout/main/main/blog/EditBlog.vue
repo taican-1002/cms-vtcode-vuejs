@@ -1,148 +1,123 @@
 <template>
   <ButtonEdit @click="handleEdit" />
   <!-- Modal -->
-  <div v-if="showModal" class="modal-wrap">
-    <div class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-dialog modal-xl" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Edit Blog</h5>
-              <button
-                type="button"
-                class="close"
-                aria-label="Close"
-                @click="handleCloseEdit"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div class="mb-3 text-left">
-                <label class="form-label">ID</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="blogEdit.id"
-                  disabled
-                />
-              </div>
-              <div class="mb-3 text-left">
-                <label class="form-label">Image</label>
-                <div class="mb-3 text-left">
-                  <div
-                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                  >
-                    Image Preview
-                  </div>
-                  <img :src="previewImage" class="edit-blog_img" />
-                </div>
-                <input
-                  type="file"
-                  class="form-control"
-                  accept="image/*"
-                  @change="uploadImage"
-                  id="file-input"
-                />
-              </div>
-              <div class="mb-3 text-left">
-                <label class="form-label"
-                  >Title <span style="color: #ff0000">*</span></label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="blogEdit.title"
-                  required
-                />
-              </div>
-
-              <div class="mb-3 text-left">
-                <label class="form-label"
-                  >Category <span style="color: #ff0000">*</span></label
-                >
-                <select
-                  class="form-select form-category"
-                  id="validationDefault04"
-                  required
-                >
-                  <option disabled value="">Select Category</option>
-                  <option
-                    v-for="item in categories"
-                    class="select-option"
-                    :key="item.id"
-                    :value="item.id"
-                    :selected="item.id === blogEdit.category.id"
-                  >
-                    {{ item.name }}
-                  </option>
-                </select>
-              </div>
-              <div class="mb-3 text-left">
-                <label for="validationDefault04" class="form-label"
-                  >Author <span style="color: #ff0000">*</span></label
-                >
-                <select
-                  class="form-select form-author"
-                  id="validationDefault04"
-                  required
-                >
-                  <option selected disabled value="">Select Author</option>
-                  <option
-                    v-for="item in authors"
-                    class="select-option"
-                    :key="item.id"
-                    :value="item.id"
-                    :selected="item.id === blogEdit.author.id"
-                  >
-                    {{ item.role }}
-                  </option>
-                </select>
-              </div>
-              <!-- <div class="mb-3">
-                <QuillEditor
-                  v-model:content="blogEdit.description"
-                  contentType="html"
-                  theme="snow"
-                  toolbar="full"
-                />
-              </div> -->
-              <div class="mb-3">
-                <CKEditor :content="blogEdit.description"></CKEditor>
-              </div>
-              <div class="mb-3 text-left">
-                <label class="form-label">Create Date</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="blogEdit.createDate"
-                  required
-                  disabled
-                />
-              </div>
-            </div>
-
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                @click="handleCloseEdit"
-              >
-                Close
-              </button>
-              <button
-                type="button"
-                class="btn btn-primary"
-                @click="handleSaveEdit"
-              >
-                SAVE CHANGE
-              </button>
-            </div>
-          </div>
-        </div>
+  <modal v-if="showModal">
+    <template v-slot:header>
+      <h5 class="modal-title">Edit Blog</h5>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        @click="handleCloseEdit"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </template>
+    <template v-slot:body>
+      <div class="mb-3 text-left">
+        <label class="form-label">ID</label>
+        <input
+          type="text"
+          class="form-control"
+          v-model="blogEdit.id"
+          disabled
+        />
       </div>
-    </div>
-  </div>
+      <div class="mb-3 text-left">
+        <label class="form-label">Image</label>
+        <div class="mb-3 text-left">
+          <div
+            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+          >
+            Image Preview
+          </div>
+          <img :src="previewImage" class="edit-blog_img" />
+        </div>
+        <input
+          type="file"
+          class="form-control"
+          accept="image/*"
+          @change="uploadImage"
+          id="file-input"
+        />
+      </div>
+      <div class="mb-3 text-left">
+        <label class="form-label"
+          >Title <span style="color: #ff0000">*</span></label
+        >
+        <input
+          type="text"
+          class="form-control"
+          v-model="blogEdit.title"
+          required
+        />
+      </div>
+
+      <div class="mb-3 text-left">
+        <label class="form-label"
+          >Category <span style="color: #ff0000">*</span></label
+        >
+        <select
+          class="form-select form-category"
+          id="validationDefault04"
+          required
+        >
+          <option disabled value="">Select Category</option>
+          <option
+            v-for="item in categories"
+            class="select-option"
+            :key="item.id"
+            :value="item.id"
+            :selected="item.id === blogEdit.category.id"
+          >
+            {{ item.name }}
+          </option>
+        </select>
+      </div>
+      <div class="mb-3 text-left">
+        <label for="validationDefault04" class="form-label"
+          >Author <span style="color: #ff0000">*</span></label
+        >
+        <select
+          class="form-select form-author"
+          id="validationDefault04"
+          required
+        >
+          <option selected disabled value="">Select Author</option>
+          <option
+            v-for="item in authors"
+            class="select-option"
+            :key="item.id"
+            :value="item.id"
+            :selected="item.id === blogEdit.author.id"
+          >
+            {{ item.role }}
+          </option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <CKEditor :content="blogEdit.description"></CKEditor>
+      </div>
+      <div class="mb-3 text-left">
+        <label class="form-label">Create Date</label>
+        <input
+          type="text"
+          class="form-control"
+          v-model="blogEdit.createDate"
+          required
+          disabled
+        />
+      </div>
+    </template>
+    <template v-slot:footer>
+      <button type="button" class="btn btn-secondary" @click="handleCloseEdit">
+        Close
+      </button>
+      <button type="button" class="btn btn-primary" @click="handleSaveEdit">
+        SAVE CHANGE
+      </button>
+    </template>
+  </modal>
 </template>
 
 <script>
@@ -153,10 +128,11 @@ import { mapGetters } from "vuex";
 // import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import { useToast } from "vue-toastification";
 import CKEditor from "../CKEditor/CKEditor.vue";
+import Modal from "../../../../components/common/Modal.vue";
 
 export default {
   name: "edit-staff",
-  components: { ButtonEdit, CKEditor },
+  components: { ButtonEdit, CKEditor, Modal },
   computed: mapGetters(["categories", "authors"]),
   setup() {
     const toast = useToast();
@@ -229,43 +205,10 @@ export default {
 .mr-2 {
   margin-right: 1rem;
 }
-.modal-wrap,
-.modal-content {
-  position: absolute;
-}
-.modal-mask {
-  position: fixed;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: table;
-  transition: opacity 0.3s ease;
-}
-.modal {
-  display: block !important; /* I added this to see the modal, you don't need this */
-}
-
-/* Important part */
-.modal-dialog {
-  overflow-y: initial !important;
-  margin: 0.75rem auto;
-}
-.modal-body {
-  height: 80vh;
-  overflow-y: auto;
-}
-
-.modal-wrapper {
-  display: table-cell;
-  /* vertical-align: middle; */
-}
 
 .edit-blog_img {
-  width: 10rem;
-  height: 10rem;
+  width: 20rem;
+  height: 20rem;
   /* border-radius: 100%; */
   display: flex;
   margin: auto;

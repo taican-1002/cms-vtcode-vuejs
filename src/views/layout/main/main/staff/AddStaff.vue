@@ -1,93 +1,78 @@
 <template>
   <ButtonAdd @click="handleToggleModal" />
-  <!-- Modal -->
-  <div v-if="showModal" class="modal-wrap">
-    <div class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Add Staff</h5>
-              <button
-                type="button"
-                class="close"
-                aria-label="Close"
-                @click="handleChange"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div class="mb-3">
-                <label class="form-label">Avatar</label>
-                <div class="mb-3">
-                  <div
-                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                  >
-                    Avatar Preview
-                  </div>
-                  <img :src="previewImage" class="add-staff__img" />
-                </div>
-                <input
-                  type="file"
-                  class="form-control"
-                  accept="image/*"
-                  @change="uploadImage"
-                  id="file-input"
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label"
-                  >Name <span style="color: #ff0000">*</span></label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  required
-                  v-model="staff.name"
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label"
-                  >Position <span style="color: #ff0000">*</span></label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="staff.position"
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label"
-                  >Office <span style="color: #ff0000">*</span></label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="staff.office"
-                  required
-                />
-              </div>
 
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  @click="showModal = false"
-                >
-                  Close
-                </button>
-                <button type="button" class="btn btn-primary" @click="onSubmit">
-                  ADD
-                </button>
-              </div>
-            </div>
+  <modal v-if="showModal">
+    <template v-slot:header
+      ><h5 class="modal-title">Add Staff</h5>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        @click="handleChange"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </template>
+    <template v-slot:body>
+      <div class="mb-3">
+        <label class="form-label">Avatar</label>
+        <div class="mb-3">
+          <div
+            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+          >
+            Avatar Preview
           </div>
+          <img :src="previewImage" class="add-staff__img" />
         </div>
+        <input
+          type="file"
+          class="form-control"
+          accept="image/*"
+          @change="uploadImage"
+          id="file-input"
+        />
       </div>
-    </div>
-  </div>
+      <div class="mb-3">
+        <label class="form-label"
+          >Name <span style="color: #ff0000">*</span></label
+        >
+        <input type="text" class="form-control" required v-model="staff.name" />
+      </div>
+      <div class="mb-3">
+        <label class="form-label"
+          >Position <span style="color: #ff0000">*</span></label
+        >
+        <input
+          type="text"
+          class="form-control"
+          v-model="staff.position"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label"
+          >Office <span style="color: #ff0000">*</span></label
+        >
+        <input
+          type="text"
+          class="form-control"
+          v-model="staff.office"
+          required
+        /></div
+    ></template>
+    <template v-slot:footer>
+      <button
+        type="button"
+        class="btn btn-secondary"
+        @click="showModal = false"
+      >
+        Close
+      </button>
+      <button type="button" class="btn btn-primary" @click="onSubmit">
+        ADD
+      </button></template
+    >
+  </modal>
 </template>
 
 <script>
@@ -95,10 +80,11 @@ import { mapActions } from "vuex";
 import ButtonAdd from "@/examples/ButtonAction/ButtonAdd.vue";
 import noAvatar from "../../../../../assets/img/no-avatar.png";
 import { useToast } from "vue-toastification";
+import Modal from "../../../../components/common/Modal.vue";
 
 export default {
   name: "AddStaff",
-  components: { ButtonAdd },
+  components: { ButtonAdd, modal: Modal },
   setup() {
     // Get toast interface
     const toast = useToast();
@@ -192,35 +178,9 @@ export default {
 </script>
 
 <style scoped>
-.modal-wrap {
-  position: absolute;
-}
-.modal-mask {
-  position: fixed;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: table;
-  transition: opacity 0.3s ease;
-}
-
-.modal-wrapper {
-  display: table-cell;
-  vertical-align: middle;
-}
-.modal-dialog {
-  overflow-y: initial !important;
-}
-.modal-body {
-  height: 80vh;
-  overflow-y: auto;
-}
 .add-staff__img {
-  width: 10rem;
-  height: 10rem;
+  width: 20rem;
+  height: 20rem;
   border-radius: 100%;
   display: flex;
   margin: auto;

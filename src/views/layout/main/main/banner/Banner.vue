@@ -6,20 +6,18 @@
     </div>
     <div class="card-body px-0 pt-0 pb-2">
       <div class="table-responsive p-0">
-        <table class="table align-items-center justify-content-center mb-0">
-          <thead>
-            <tr>
-              <th
-                v-for="item in bannerTable"
-                :key="item"
-                :class="item.class"
-                @click="sort(item.name)"
-              >
-                {{ item.name }}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
+        <tableCommon>
+          <template v-slot:tableThead>
+            <th
+              v-for="item in bannerTable"
+              :key="item"
+              :class="item.class"
+              @click="sort(item.name)"
+            >
+              {{ item.name }}
+            </th>
+          </template>
+          <template v-slot:tableTbody>
             <tr v-for="item in sortedBanner" :key="item.id">
               <td class="table-id">
                 {{ item.id }}
@@ -34,8 +32,8 @@
                 <DeleteBanner :banner="item" />
               </td>
             </tr>
-          </tbody>
-        </table>
+          </template>
+        </tableCommon>
       </div>
     </div>
   </div>
@@ -46,6 +44,7 @@ import AddBanner from "./AddBanner.vue";
 import EditBanner from "./EditBanner.vue";
 import DeleteBanner from "./DeleteBanner.vue";
 import { mapGetters } from "vuex";
+import Table from "../../../../components/common/Table.vue";
 
 export default {
   name: "banner-dashboard",
@@ -87,6 +86,7 @@ export default {
     AddBanner,
     EditBanner,
     DeleteBanner,
+    tableCommon: Table,
   },
   computed: {
     ...mapGetters(["banners"]),

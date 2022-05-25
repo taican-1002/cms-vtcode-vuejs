@@ -14,7 +14,9 @@
 </template>
 
 <script>
-export default {};
+export default {
+  name: "tableCommon",
+};
 </script>
 
 <style></style>

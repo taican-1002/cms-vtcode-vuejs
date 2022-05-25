@@ -5,57 +5,6 @@
       <AddBlog />
     </div>
     <div class="card-body px-0 pt-0 pb-2">
-      <!-- <div class="table-responsive p-0">
-        <table class="table align-items-center mb-0">
-          <thead></thead>
-          <tbody>
-            <tr v-for="item in sortedBlog" :key="item.id">
-              <td>
-                <div class="d-flex px-2 py-1 blog-post__id">
-                  {{ item.id }}
-                </div>
-              </td>
-              <td class="blog-post__title">
-                <p class="text-lg font-weight-bold mb-0">
-                  {{ item.title }}
-                </p>
-              </td>
-
-              <td class="align-middle text-sm">
-                {{ item.category.name }}
-              </td>
-              <td class="align-middle">{{ item.author.role }}</td>
-              <td class="align-middle">
-                <img :src="item.image" alt="" class="blog-post__img" />
-              </td>
-              <td class="align-middle">
-                <span class="text-secondary text-xs font-weight-bold">{{
-                  item.createDate
-                }}</span>
-              </td>
-              <td>
-                <div class="form-check form-switch blog-post__isPin">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    role="switch"
-                    id="flexSwitchCheckDefault"
-                    :checked="item.isPin"
-                    @change="handleToggleIsPin(item)"
-                  />
-                </div>
-              </td>
-              <td class="align-middle text-center">
-                <EditBlog :blog="item" />
-                <DeleteBlog :blog="item" />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div>
-          {{ isPinBlog }}
-        </div>
-      </div> -->
       <tableCommon>
         <template v-slot:tableThead>
           <th
@@ -111,6 +60,9 @@
           </tr>
         </template>
       </tableCommon>
+      <div>
+        {{ isPinBlog }}
+      </div>
     </div>
   </div>
 </template>

@@ -1,105 +1,90 @@
 <template>
   <ButtonEdit @click="handleEdit" />
   <!-- Modal -->
-  <div v-if="showModal" class="modal-wrap">
-    <div class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-dialog modal-xl" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Edit Banner</h5>
-              <button
-                type="button"
-                class="close"
-                aria-label="Close"
-                @click="handleCloseEdit"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div class="mb-3 text-left">
-                <label class="form-label">ID</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="bannerEdit.id"
-                  disabled
-                />
-              </div>
-              <div class="mb-3 text-left">
-                <label class="form-label">Image</label>
-                <div class="mb-3 text-left">
-                  <div
-                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                  >
-                    Image Preview
-                  </div>
-                  <img :src="previewImage" class="edit-banner_img" />
-                </div>
-                <input
-                  type="file"
-                  class="form-control"
-                  accept="image/*"
-                  @change="uploadImage"
-                  id="file-input"
-                />
-              </div>
-              <div class="mb-3 text-left">
-                <label class="form-label"
-                  >Slogan <span style="color: #ff0000">*</span></label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="bannerEdit.slogan"
-                  required
-                />
-              </div>
-              <div class="mb-3 text-left">
-                <label class="form-label"
-                  >Description <span style="color: #ff0000">*</span></label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="bannerEdit.description"
-                  required
-                />
-              </div>
-            </div>
 
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                @click="handleCloseEdit"
-              >
-                Close
-              </button>
-              <button
-                type="button"
-                class="btn btn-primary"
-                @click="handleSaveEdit"
-              >
-                SAVE CHANGE
-              </button>
-            </div>
-          </div>
-        </div>
+  <modal v-if="showModal">
+    <template v-slot:header>
+      <h5 class="modal-title">Edit Banner</h5>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        @click="handleCloseEdit"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </template>
+    <template v-slot:body>
+      <div class="mb-3 text-left">
+        <label class="form-label">ID</label>
+        <input
+          type="text"
+          class="form-control"
+          v-model="bannerEdit.id"
+          disabled
+        />
       </div>
-    </div>
-  </div>
+      <div class="mb-3 text-left">
+        <label class="form-label">Image</label>
+        <div class="mb-3 text-left">
+          <div
+            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+          >
+            Image Preview
+          </div>
+          <img :src="previewImage" class="edit-banner_img" />
+        </div>
+        <input
+          type="file"
+          class="form-control"
+          accept="image/*"
+          @change="uploadImage"
+          id="file-input"
+        />
+      </div>
+      <div class="mb-3 text-left">
+        <label class="form-label"
+          >Slogan <span style="color: #ff0000">*</span></label
+        >
+        <input
+          type="text"
+          class="form-control"
+          v-model="bannerEdit.slogan"
+          required
+        />
+      </div>
+      <div class="mb-3 text-left">
+        <label class="form-label"
+          >Description <span style="color: #ff0000">*</span></label
+        >
+        <input
+          type="text"
+          class="form-control"
+          v-model="bannerEdit.description"
+          required
+        />
+      </div>
+    </template>
+    <template v-slot:footer>
+      <button type="button" class="btn btn-secondary" @click="handleCloseEdit">
+        Close
+      </button>
+      <button type="button" class="btn btn-primary" @click="handleSaveEdit">
+        SAVE CHANGE
+      </button>
+    </template>
+  </modal>
 </template>
 
 <script>
 import { mapActions } from "vuex";
 import ButtonEdit from "@/examples/ButtonAction/ButtonEdit.vue";
 import { useToast } from "vue-toastification";
+import Modal from "../../../../components/common/Modal.vue";
 
 export default {
   name: "edit-staff",
-  components: { ButtonEdit },
+  components: { ButtonEdit, modal: Modal },
   setup() {
     // Get toast interface
     const toast = useToast();

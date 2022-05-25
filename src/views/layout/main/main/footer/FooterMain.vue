@@ -7,20 +7,18 @@
     </div>
     <div class="card-body px-0 pt-0 pb-2">
       <div class="table-responsive p-0">
-        <table class="table align-items-center justify-content-center mb-0">
-          <thead>
-            <tr>
-              <th
-                v-for="item in footerTable"
-                :key="item"
-                :class="item.class"
-                @click="sortFooter(item.name)"
-              >
-                {{ item.name }}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
+        <tableCommon>
+          <template v-slot:tableThead>
+            <th
+              v-for="item in footerTable"
+              :key="item"
+              :class="item.class"
+              @click="sortFooter(item.name)"
+            >
+              {{ item.name }}
+            </th>
+          </template>
+          <template v-slot:tableTbody>
             <tr v-for="item in sortedFooter" :key="item.id">
               <td class="table-id">
                 {{ item.id }}
@@ -45,8 +43,8 @@
                 <DeleteFooter :footerItem="item" />
               </td>
             </tr>
-          </tbody>
-        </table>
+          </template>
+        </tableCommon>
       </div>
     </div>
   </div>
@@ -58,20 +56,18 @@
     </div>
     <div class="card-body px-0 pt-0 pb-2">
       <div class="table-responsive p-0">
-        <table class="table align-items-center justify-content-center mb-0">
-          <thead>
-            <tr>
-              <th
-                v-for="item in footerFollowTable"
-                :key="item"
-                :class="item.class"
-                @click="sortFollow(item.name)"
-              >
-                {{ item.name }}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
+        <tableCommon>
+          <template v-slot:tableThead>
+            <th
+              v-for="item in footerFollowTable"
+              :key="item"
+              :class="item.class"
+              @click="sortFollow(item.name)"
+            >
+              {{ item.name }}
+            </th>
+          </template>
+          <template v-slot:tableTbody>
             <tr v-for="item in sortedFollow" :key="item.id">
               <td class="table-id">
                 {{ item.id }}
@@ -83,8 +79,8 @@
                 <DeleteFooterFollow :footerFollow="item" />
               </td>
             </tr>
-          </tbody>
-        </table>
+          </template>
+        </tableCommon>
       </div>
     </div>
   </div>
@@ -99,6 +95,7 @@ import DeleteFooterFollow from "./DeleteFooterFollow.vue";
 import DeleteFooter from "./DeleteFooter.vue";
 
 import { mapGetters } from "vuex";
+import Table from "../../../../components/common/Table.vue";
 
 export default {
   name: "footer-main",
@@ -109,6 +106,7 @@ export default {
     EditFooterFollow,
     DeleteFooter,
     DeleteFooterFollow,
+    tableCommon: Table,
   },
   computed: {
     ...mapGetters(["itemFooter", "followFooter", "EditFooterFollow"]),

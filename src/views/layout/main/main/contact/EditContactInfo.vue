@@ -1,88 +1,72 @@
 <template>
   <ButtonEdit @click="handleEdit" />
   <!-- Modal -->
-  <div v-if="showModal" class="modal-wrap">
-    <div class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Edit contact info</h5>
-              <button
-                type="button"
-                class="close"
-                aria-label="Close"
-                @click="handleCloseEdit"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div class="mb-3 text-left">
-                <label class="form-label">ID</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="contactInfoEdit.id"
-                  disabled
-                />
-              </div>
-              <div class="mb-3 text-left">
-                <label class="form-label"
-                  >Name <span style="color: #ff0000">*</span></label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="contactInfoEdit.name"
-                  required
-                />
-              </div>
-              <div class="mb-3 text-left">
-                <label class="form-label"
-                  >Content <span style="color: #ff0000">*</span></label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  id="contact-phone"
-                  v-model="contactInfoEdit.content"
-                  required
-                />
-              </div>
-            </div>
 
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                @click="handleCloseEdit"
-              >
-                Close
-              </button>
-              <button
-                type="button"
-                class="btn btn-primary"
-                @click="handleSaveEdit"
-              >
-                SAVE CHANGE
-              </button>
-            </div>
-          </div>
-        </div>
+  <modal v-if="showModal">
+    <template v-slot:header>
+      <h5 class="modal-title">Edit contact info</h5>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        @click="handleCloseEdit"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </template>
+    <template v-slot:body>
+      <div class="mb-3 text-left">
+        <label class="form-label">ID</label>
+        <input
+          type="text"
+          class="form-control"
+          v-model="contactInfoEdit.id"
+          disabled
+        />
       </div>
-    </div>
-  </div>
+      <div class="mb-3 text-left">
+        <label class="form-label"
+          >Name <span style="color: #ff0000">*</span></label
+        >
+        <input
+          type="text"
+          class="form-control"
+          v-model="contactInfoEdit.name"
+          required
+        />
+      </div>
+      <div class="mb-3 text-left">
+        <label class="form-label"
+          >Content <span style="color: #ff0000">*</span></label
+        >
+        <input
+          type="text"
+          class="form-control"
+          id="contact-phone"
+          v-model="contactInfoEdit.content"
+          required
+        /></div
+    ></template>
+    <template v-slot:footer>
+      <button type="button" class="btn btn-secondary" @click="handleCloseEdit">
+        Close
+      </button>
+      <button type="button" class="btn btn-primary" @click="handleSaveEdit">
+        SAVE CHANGE
+      </button>
+    </template>
+  </modal>
 </template>
 
 <script>
 import { mapActions } from "vuex";
 import ButtonEdit from "@/examples/ButtonAction/ButtonEdit.vue";
 import { useToast } from "vue-toastification";
+import Modal from "../../../../components/common/Modal.vue";
 
 export default {
   name: "edit-contact",
-  components: { ButtonEdit },
+  components: { ButtonEdit, modal: Modal },
   setup() {
     const toast = useToast();
 

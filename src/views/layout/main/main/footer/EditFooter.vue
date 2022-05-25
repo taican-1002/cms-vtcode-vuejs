@@ -2,235 +2,181 @@
   <ButtonEdit @click="showModal = true" />
 
   <!-- Modal -->
-  <div v-if="showModal" class="modal-wrap">
-    <div class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-dialog modal-xl" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Edit Footer</h5>
-              <button
-                type="button"
-                class="close"
-                aria-label="Close"
-                @click="handleCloseEdit"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body modal-main__body">
-              <div>
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label"
-                    >ID</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="editItem.id"
-                    disabled
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="exampleInputEmail1" class="form-label"
-                    >Name <span style="color: #ff0000">*</span></label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    required
-                    v-model="editItem.name"
-                  />
-                </div>
-                <div class="edit-footer__des">
-                  <h5 class="pt-3 text-left">Description</h5>
-                  <ButtonAdd @click="handleAddModalDes" class="mb-3" />
-                </div>
-                <!-- Modal Add Des -->
-                <div v-if="showModalAddDes" class="modal-wrap">
-                  <div class="modal-mask">
-                    <div class="modal-wrapper">
-                      <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title">Add Description</h5>
-                            <button
-                              type="button"
-                              class="close"
-                              aria-label="Close"
-                              @click="showModalAddDes = false"
-                            >
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                            <div class="mb-3">
-                              <label class="form-label"
-                                >Text
-                                <span style="color: #ff0000">*</span></label
-                              >
-                              <input
-                                type="text"
-                                class="form-control add-des__text"
-                              />
-                            </div>
-                          </div>
-                          <div class="modal-footer">
-                            <button
-                              type="button"
-                              class="btn btn-secondary"
-                              @click="showModalAddDes = false"
-                            >
-                              Close
-                            </button>
-
-                            <button
-                              type="button"
-                              class="btn btn-primary"
-                              @click="onSubmitAddModalDes"
-                            >
-                              ADD
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Modal Description -->
-                <div v-if="showModalIcon" class="modal-wrap">
-                  <div class="modal-mask">
-                    <div class="modal-wrapper">
-                      <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title">Edit Description</h5>
-                            <button
-                              type="button"
-                              class="close"
-                              aria-label="Close"
-                              @click="showModalIcon = false"
-                            >
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                            <div class="mb-3">
-                              <label class="form-label"
-                                >Text
-                                <span style="color: #ff0000">*</span></label
-                              >
-                              <input
-                                type="text"
-                                class="form-control des-text"
-                                v-model="textDes"
-                              />
-                            </div>
-                          </div>
-                          <div class="modal-footer">
-                            <button
-                              type="button"
-                              class="btn btn-secondary"
-                              @click="showModalIcon = false"
-                            >
-                              Close
-                            </button>
-
-                            <button
-                              type="button"
-                              class="btn btn-primary"
-                              @click="onSubmitModalDes"
-                            >
-                              SAVE
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Modal Delete Des Item -->
-                <div v-if="showModalDelete" class="modal-wrap">
-                  <div class="modal-mask">
-                    <div class="modal-wrapper">
-                      <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title">Delete Footer</h5>
-                            <button
-                              type="button"
-                              class="close"
-                              aria-label="Close"
-                              @click="showModalDelete = false"
-                            >
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                            <div>
-                              <div class="mb-3">
-                                Bạn có chắc muốn xóa item này ?
-                              </div>
-
-                              <div class="modal-footer">
-                                <button
-                                  type="button"
-                                  class="btn btn-secondary"
-                                  @click="showModalDelete = false"
-                                >
-                                  Close
-                                </button>
-
-                                <button
-                                  type="button"
-                                  class="btn btn-primary"
-                                  @click="handleDeleteModalDes"
-                                >
-                                  DELETE
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="mb-3 description-content text-left"
-                  v-for="(desItem, index) in editItem.description"
-                  :key="index"
-                >
-                  <div class="mb-3 description-text">
-                    {{ desItem.text }}
-                  </div>
-                  <ButtonEdit
-                    @click="handleOpenModalDes(desItem, index)"
-                    class="mb-3 float-left"
-                    style="margin-bottom: 1rem !important"
-                  />
-                  <ButtonDelete @click="handleDeleteDesItem(desItem)" />
-                </div>
-              </div>
-            </div>
-
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                @click="handleCloseEdit"
-              >
-                Close
-              </button>
-              <button type="button" class="btn btn-primary" @click="onSubmit">
-                SAVE CHANGE
-              </button>
-            </div>
-          </div>
-        </div>
+  <modal v-if="showModal">
+    <template v-slot:header>
+      <h5 class="modal-title">Edit Footer</h5>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        @click="handleCloseEdit"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button></template
+    >
+    <template v-slot:body>
+      <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">ID</label>
+        <input
+          type="text"
+          class="form-control"
+          v-model="editItem.id"
+          disabled
+        />
       </div>
-    </div>
-  </div>
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label"
+          >Name <span style="color: #ff0000">*</span></label
+        >
+        <input
+          type="text"
+          class="form-control"
+          required
+          v-model="editItem.name"
+        />
+      </div>
+      <div class="edit-footer__des">
+        <h5 class="pt-3 text-left">Description</h5>
+        <ButtonAdd @click="handleAddModalDes" class="mb-3" />
+      </div>
+
+      <div
+        class="mb-3 description-content text-left"
+        v-for="(desItem, index) in editItem.description"
+        :key="index"
+      >
+        <div class="mb-3 description-text">
+          {{ desItem.text }}
+        </div>
+        <ButtonEdit
+          @click="handleOpenModalDes(desItem, index)"
+          class="mb-3 float-left"
+          style="margin-bottom: 1rem !important"
+        />
+        <ButtonDelete @click="handleDeleteDesItem(desItem)" /></div
+    ></template>
+    <template v-slot:footer>
+      <button type="button" class="btn btn-secondary" @click="handleCloseEdit">
+        Close
+      </button>
+      <button type="button" class="btn btn-primary" @click="onSubmit">
+        SAVE CHANGE
+      </button></template
+    >
+  </modal>
+
+  <!-- Modal Add Des -->
+  <modal v-if="showModalAddDes">
+    <template v-slot:header>
+      <h5 class="modal-title">Add Description</h5>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        @click="showModalAddDes = false"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button></template
+    >
+    <template v-slot:body>
+      <div class="mb-3">
+        <label class="form-label"
+          >Text <span style="color: #ff0000">*</span></label
+        >
+        <input type="text" class="form-control add-des__text" /></div
+    ></template>
+    <template v-slot:footer
+      ><button
+        type="button"
+        class="btn btn-secondary"
+        @click="showModalAddDes = false"
+      >
+        Close
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-primary"
+        @click="onSubmitAddModalDes"
+      >
+        ADD
+      </button>
+    </template>
+  </modal>
+
+  <!-- Modal Description -->
+  <modal v-if="showModalIcon">
+    <template v-slot:header
+      ><h5 class="modal-title">Edit Description</h5>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        @click="showModalIcon = false"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </template>
+    <template v-slot:body>
+      <div class="mb-3">
+        <label class="form-label"
+          >Text <span style="color: #ff0000">*</span></label
+        >
+        <input
+          type="text"
+          class="form-control des-text"
+          v-model="textDes"
+        /></div
+    ></template>
+    <template v-slot:footer>
+      <button
+        type="button"
+        class="btn btn-secondary"
+        @click="showModalIcon = false"
+      >
+        Close
+      </button>
+
+      <button type="button" class="btn btn-primary" @click="onSubmitModalDes">
+        SAVE
+      </button></template
+    >
+  </modal>
+
+  <!-- Modal Delete Des Item -->
+  <modalSmall v-if="showModalDelete">
+    <template v-slot:header>
+      <h5 class="modal-title">Delete Footer</h5>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        @click="showModalDelete = false"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button></template
+    >
+    <template v-slot:body>
+      <div class="mb-3">Bạn có chắc muốn xóa item này ?</div>
+    </template>
+    <template v-slot:footer
+      ><button
+        type="button"
+        class="btn btn-secondary"
+        @click="showModalDelete = false"
+      >
+        Close
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-primary"
+        @click="handleDeleteModalDes"
+      >
+        DELETE
+      </button>
+    </template>
+  </modalSmall>
 </template>
 
 <script>
@@ -239,10 +185,18 @@ import ButtonEdit from "@/examples/ButtonAction/ButtonEdit.vue";
 import ButtonDelete from "@/examples/ButtonAction/ButtonDelete.vue";
 import ButtonAdd from "@/examples/ButtonAction/ButtonAdd.vue";
 import { useToast } from "vue-toastification";
+import Modal from "../../../../components/common/Modal.vue";
+import ModalSmall from "../../../../components/common/ModalSmall.vue";
 
 export default {
   name: "EditFooter",
-  components: { ButtonEdit, ButtonAdd, ButtonDelete },
+  components: {
+    ButtonEdit,
+    ButtonAdd,
+    ButtonDelete,
+    modal: Modal,
+    modalSmall: ModalSmall,
+  },
   setup() {
     const toast = useToast();
 
@@ -348,35 +302,6 @@ export default {
 }
 .mr-2 {
   margin-right: 1rem;
-}
-.modal-wrap,
-.modal-content {
-  position: absolute;
-}
-.modal-mask {
-  position: fixed;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: table;
-  transition: opacity 0.3s ease;
-}
-
-.modal-wrapper {
-  display: table-cell;
-  /* vertical-align: middle; */
-}
-/* Important part */
-.modal-dialog {
-  overflow-y: initial !important;
-  margin: 0.75rem auto !important;
-}
-.modal-main__body {
-  height: 80vh;
-  overflow-y: auto;
 }
 .form-label {
   float: left;

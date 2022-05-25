@@ -6,20 +6,18 @@
     </div>
     <div class="card-body px-0 pt-0 pb-2">
       <div class="table-responsive p-0">
-        <table class="table align-items-center justify-content-center mb-0">
-          <thead>
-            <tr>
-              <th
-                v-for="item in thTable"
-                :key="item"
-                :class="item.class"
-                @click="sort(item.name)"
-              >
-                {{ item.name }}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
+        <tableCommon>
+          <template v-slot:tableThead>
+            <th
+              v-for="item in thTable"
+              :key="item"
+              :class="item.class"
+              @click="sort(item.name)"
+            >
+              {{ item.name }}
+            </th></template
+          >
+          <template v-slot:tableTbody>
             <tr v-for="item in sortedHeader" :key="item.id">
               <td class="table-id">
                 {{ item.id }}
@@ -30,10 +28,9 @@
               <td class="table-action">
                 <EditHeader :header="item" />
                 <DeleteHeader :header="item" />
-              </td>
-            </tr>
-          </tbody>
-        </table>
+              </td></tr
+          ></template>
+        </tableCommon>
       </div>
     </div>
   </div>
@@ -44,23 +41,18 @@
     </div>
     <div class="card-body px-0 pt-0 pb-2">
       <div class="table-responsive p-0">
-        <table
-          class="table align-items-center justify-content-center mb-0"
-          id="sortTable"
-        >
-          <thead>
-            <tr>
-              <th
-                v-for="item in logoTable"
-                :key="item"
-                :class="item.class"
-                @click="sortLogo(item.name)"
-              >
-                {{ item.name }}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
+        <tableCommon>
+          <template v-slot:tableThead>
+            <th
+              v-for="item in logoTable"
+              :key="item"
+              :class="item.class"
+              @click="sortLogo(item.name)"
+            >
+              {{ item.name }}
+            </th></template
+          >
+          <template v-slot:tableTbody>
             <tr v-for="item in sortedLogo" :key="item.id">
               <td class="table-id">
                 {{ item.id }}
@@ -74,8 +66,8 @@
                 <DeleteLogo :logo="item" />
               </td>
             </tr>
-          </tbody>
-        </table>
+          </template>
+        </tableCommon>
       </div>
     </div>
   </div>
@@ -89,6 +81,7 @@ import EditLogo from "./EditLogo.vue";
 import DeleteHeader from "./DeleteHeader.vue";
 import DeleteLogo from "./DeleteLogo.vue";
 import { mapGetters } from "vuex";
+import Table from "../../../../components/common/Table.vue";
 
 export default {
   name: "header-dashboard",
@@ -100,6 +93,7 @@ export default {
     EditLogo,
     DeleteHeader,
     DeleteLogo,
+    tableCommon: Table,
   },
 
   computed: {

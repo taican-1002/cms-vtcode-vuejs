@@ -1,78 +1,66 @@
 <template>
   <ButtonAdd @click="handleToggleModal" />
-  <!-- Modal -->
-  <div v-if="showModal" class="modal-wrap">
-    <div class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Add User</h5>
-              <button
-                type="button"
-                class="close"
-                aria-label="Close"
-                @click="handleChange"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div class="mb-3">
-                <label class="form-label"
-                  >Email address <span style="color: #ff0000">*</span></label
-                >
-                <input
-                  type="text"
-                  class="form-control form-email"
-                  required
-                  v-model="user.email"
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label"
-                  >Password <span style="color: #ff0000">*</span></label
-                >
-                <input
-                  type="password"
-                  class="form-control"
-                  v-model="user.password"
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label"
-                  >Role <span style="color: #ff0000">*</span></label
-                >
-                <select class="form-select form-role" required>
-                  <option selected disabled value="">Select Role</option>
-                  <option
-                    v-for="item in roleUser"
-                    :key="item.id"
-                    :value="item.name"
-                  >
-                    {{ item.name }}
-                  </option>
-                </select>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                @click="showModal = false"
-              >
-                Close
-              </button>
-              <button type="button" class="btn btn-primary" @click="onSubmit">
-                ADD
-              </button>
-            </div>
-          </div>
-        </div>
+
+  <modal v-if="showModal">
+    <template v-slot:header>
+      <h5 class="modal-title">Add User</h5>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        @click="handleChange"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button></template
+    >
+    <template v-slot:body>
+      <div class="mb-3">
+        <label class="form-label"
+          >Email address <span style="color: #ff0000">*</span></label
+        >
+        <input
+          type="text"
+          class="form-control form-email"
+          required
+          v-model="user.email"
+        />
       </div>
-    </div>
-  </div>
+      <div class="mb-3">
+        <label class="form-label"
+          >Password <span style="color: #ff0000">*</span></label
+        >
+        <input
+          type="password"
+          class="form-control"
+          v-model="user.password"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label"
+          >Role <span style="color: #ff0000">*</span></label
+        >
+        <select class="form-select form-role" required>
+          <option selected disabled value="">Select Role</option>
+          <option v-for="item in roleUser" :key="item.id" :value="item.name">
+            {{ item.name }}
+          </option>
+        </select>
+      </div>
+    </template>
+    <template v-slot:footer>
+      <button
+        type="button"
+        class="btn btn-secondary"
+        @click="showModal = false"
+      >
+        Close
+      </button>
+      <button type="button" class="btn btn-primary" @click="onSubmit">
+        ADD
+      </button></template
+    >
+  </modal>
 </template>
 
 <script>
@@ -80,10 +68,10 @@ import { mapActions } from "vuex";
 import ButtonAdd from "@/examples/ButtonAction/ButtonAdd.vue";
 import { useToast } from "vue-toastification";
 import { mapGetters } from "vuex";
-
+import Modal from "../../../../components/common/Modal.vue";
 export default {
   name: "AddUser",
-  components: { ButtonAdd },
+  components: { ButtonAdd, modal: Modal },
 
   setup() {
     // Get toast interface
@@ -165,24 +153,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.modal-wrap {
-  position: absolute;
-}
-.modal-mask {
-  position: fixed;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: table;
-  transition: opacity 0.3s ease;
-}
-
-.modal-wrapper {
-  display: table-cell;
-  vertical-align: middle;
-}
-</style>
+<style scoped></style>

@@ -6,20 +6,18 @@
     </div>
     <div class="card-body px-0 pt-0 pb-2">
       <div class="table-responsive p-0">
-        <table class="table align-items-center justify-content-center mb-0">
-          <thead>
-            <tr>
-              <th
-                v-for="item in cateTable"
-                :key="item"
-                :class="item.class"
-                @click="sort(item.name)"
-              >
-                {{ item.name }}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
+        <tableCommon>
+          <template v-slot:tableThead>
+            <th
+              v-for="item in cateTable"
+              :key="item"
+              :class="item.class"
+              @click="sort(item.name)"
+            >
+              {{ item.name }}
+            </th>
+          </template>
+          <template v-slot:tableTbody>
             <tr v-for="item in sortedCategory" :key="item.id">
               <td class="table-id">
                 {{ item.id }}
@@ -31,8 +29,8 @@
                 <DeleteCategory :category="item" />
               </td>
             </tr>
-          </tbody>
-        </table>
+          </template>
+        </tableCommon>
       </div>
     </div>
   </div>
@@ -43,10 +41,11 @@ import AddCategory from "./AddCategory.vue";
 import EditCategory from "./EditCategory.vue";
 import DeleteCategory from "./DeleteCategory.vue";
 import { mapGetters } from "vuex";
+import Table from "../../../../components/common/Table.vue";
 
 export default {
   name: "category-dashboard",
-  components: { AddCategory, EditCategory, DeleteCategory },
+  components: { AddCategory, EditCategory, DeleteCategory, tableCommon: Table },
   computed: {
     ...mapGetters(["categories"]),
     sortedCategory() {

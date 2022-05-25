@@ -1,81 +1,74 @@
 <template>
   <ButtonAdd @click="handleToggleModal" />
+
   <!-- Modal -->
-  <div v-if="showModal" class="modal-wrap">
-    <div class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Add Banner</h5>
-              <button
-                type="button"
-                class="close"
-                aria-label="Close"
-                @click="handleChange"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div class="mb-3">
-                <label class="form-label">Image</label>
-                <div class="mb-3">
-                  <div
-                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                  >
-                    Image Preview
-                  </div>
-                  <img :src="previewImage" class="add-banner__img" />
-                </div>
-                <input
-                  type="file"
-                  class="form-control"
-                  accept="image/*"
-                  @change="uploadImage"
-                  id="file-input"
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label"
-                  >Slogan <span style="color: #ff0000">*</span></label
-                >
-                <input
-                  type="text"
-                  class="form-control form-email"
-                  required
-                  v-model="banner.slogan"
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label"
-                  >Description <span style="color: #ff0000">*</span></label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="banner.description"
-                  required
-                />
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  @click="showModal = false"
-                >
-                  Close
-                </button>
-                <button type="button" class="btn btn-primary" @click="onSubmit">
-                  ADD
-                </button>
-              </div>
-            </div>
+  <modal v-if="showModal">
+    <template v-slot:header>
+      <h5 class="modal-title">Add Banner</h5>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        @click="handleChange"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </template>
+    <template v-slot:body>
+      <div class="mb-3">
+        <label class="form-label">Image</label>
+        <div class="mb-3">
+          <div
+            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+          >
+            Image Preview
           </div>
+          <img :src="previewImage" class="add-banner__img" />
         </div>
+        <input
+          type="file"
+          class="form-control"
+          accept="image/*"
+          @change="uploadImage"
+          id="file-input"
+        />
       </div>
-    </div>
-  </div>
+      <div class="mb-3">
+        <label class="form-label"
+          >Slogan <span style="color: #ff0000">*</span></label
+        >
+        <input
+          type="text"
+          class="form-control form-email"
+          required
+          v-model="banner.slogan"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label"
+          >Description <span style="color: #ff0000">*</span></label
+        >
+        <input
+          type="text"
+          class="form-control"
+          v-model="banner.description"
+          required
+        />
+      </div>
+    </template>
+    <template v-slot:footer>
+      <button
+        type="button"
+        class="btn btn-secondary"
+        @click="showModal = false"
+      >
+        Close
+      </button>
+      <button type="button" class="btn btn-primary" @click="onSubmit">
+        ADD
+      </button>
+    </template>
+  </modal>
 </template>
 
 <script>
@@ -83,10 +76,15 @@ import { mapActions } from "vuex";
 import ButtonAdd from "@/examples/ButtonAction/ButtonAdd.vue";
 import { useToast } from "vue-toastification";
 import noImage from "../../../../../assets/img/no-image.png";
+import Modal from "../../../../components/common/Modal.vue";
 
 export default {
   name: "AddBanner",
-  components: { ButtonAdd },
+
+  components: {
+    ButtonAdd,
+    modal: Modal,
+  },
 
   setup() {
     // Get toast interface
@@ -159,34 +157,6 @@ export default {
 </script>
 
 <style scoped>
-.modal-wrap {
-  position: absolute;
-}
-.modal-mask {
-  position: fixed;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: table;
-  transition: opacity 0.3s ease;
-}
-/* Important part */
-.modal-dialog {
-  overflow-y: initial !important;
-  margin: 0.75rem auto;
-}
-.modal-body {
-  overflow-y: auto;
-  height: 80vh;
-}
-
-.modal-wrapper {
-  display: table-cell;
-  vertical-align: middle;
-}
 .add-banner__img {
   width: 20rem;
   height: 20rem;

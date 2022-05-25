@@ -6,20 +6,18 @@
     </div>
     <div class="card-body px-0 pt-0 pb-2">
       <div class="table-responsive p-0">
-        <table class="table align-items-center justify-content-center mb-0">
-          <thead>
-            <tr>
-              <th
-                v-for="item in userTable"
-                :key="item"
-                :class="item.class"
-                @click="sort(item.name)"
-              >
-                {{ item.name }}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
+        <tableCommon>
+          <template v-slot:tableThead>
+            <th
+              v-for="item in userTable"
+              :key="item"
+              :class="item.class"
+              @click="sort(item.name)"
+            >
+              {{ item.name }}
+            </th></template
+          >
+          <template v-slot:tableTbody>
             <tr v-for="item in sortedUser" :key="item.id">
               <td class="table-id">
                 {{ item.id }}
@@ -32,8 +30,8 @@
                 <DeleteUser :user="item" />
               </td>
             </tr>
-          </tbody>
-        </table>
+          </template>
+        </tableCommon>
       </div>
     </div>
   </div>
@@ -44,11 +42,11 @@ import AddUser from "./AddUser.vue";
 import EditUser from "./EditUser.vue";
 import DeleteUser from "./DeleteUser.vue";
 import { mapGetters } from "vuex";
-
+import Table from "../../../../components/common/Table.vue";
 export default {
   name: "user-table",
 
-  components: { AddUser, EditUser, DeleteUser },
+  components: { AddUser, EditUser, DeleteUser, tableCommon: Table },
   computed: {
     ...mapGetters(["users"]),
     sortedUser() {

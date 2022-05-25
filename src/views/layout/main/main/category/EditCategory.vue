@@ -1,85 +1,74 @@
 <template>
   <ButtonEdit @click="handleEdit" />
   <!-- Modal -->
-  <div v-if="showModal" class="modal-wrap">
-    <div class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Edit Category</h5>
-              <button
-                type="button"
-                class="close"
-                aria-label="Close"
-                @click="handleCloseEdit"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div class="mb-3">
-                <label class="form-label">ID</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="categoryEdit.id"
-                  disabled
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label"
-                  >Name <span style="color: #ff0000">*</span></label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  required
-                  v-model="categoryEdit.name"
-                  @change="ToSeoUrl(this.categoryEdit.name)"
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Seo</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="categoryEdit.seo"
-                  disabled
-                />
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                @click="handleCloseEdit"
-              >
-                Close
-              </button>
-              <button
-                type="button"
-                class="btn btn-primary"
-                @click="handleSaveEdit"
-              >
-                SAVE CHANGE
-              </button>
-            </div>
-          </div>
-        </div>
+
+  <modal v-if="showModal">
+    <template v-slot:header>
+      <h5 class="modal-title">Edit Category</h5>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        @click="handleCloseEdit"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </template>
+    <template v-slot:body>
+      <div class="mb-3">
+        <label class="form-label">ID</label>
+        <input
+          type="text"
+          class="form-control"
+          v-model="categoryEdit.id"
+          disabled
+        />
       </div>
-    </div>
-  </div>
+      <div class="mb-3">
+        <label class="form-label"
+          >Name <span style="color: #ff0000">*</span></label
+        >
+        <input
+          type="text"
+          class="form-control"
+          required
+          v-model="categoryEdit.name"
+          @change="ToSeoUrl(this.categoryEdit.name)"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Seo</label>
+        <input
+          type="text"
+          class="form-control"
+          v-model="categoryEdit.seo"
+          disabled
+        />
+      </div>
+    </template>
+    <template v-slot:footer>
+      <button type="button" class="btn btn-secondary" @click="handleCloseEdit">
+        Close
+      </button>
+      <button type="button" class="btn btn-primary" @click="handleSaveEdit">
+        SAVE CHANGE
+      </button>
+    </template>
+  </modal>
 </template>
 
 <script>
 import { mapActions } from "vuex";
 import ButtonEdit from "@/examples/ButtonAction/ButtonEdit.vue";
 import { useToast } from "vue-toastification";
+import Modal from "../../../../components/common/Modal.vue";
 
 export default {
   name: "EditCategory",
-  components: { ButtonEdit },
+  components: {
+    ButtonEdit,
+    modal: Modal,
+  },
   data() {
     return {
       categoryEdit: {
@@ -143,24 +132,5 @@ export default {
 <style scoped>
 .mr-2 {
   margin-right: 1rem;
-}
-.modal-wrap {
-  position: absolute;
-}
-.modal-mask {
-  position: fixed;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: table;
-  transition: opacity 0.3s ease;
-}
-
-.modal-wrapper {
-  display: table-cell;
-  vertical-align: middle;
 }
 </style>
