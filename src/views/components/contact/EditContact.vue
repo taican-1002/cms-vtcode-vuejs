@@ -7,12 +7,12 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Edit Staff</h5>
+              <h5 class="modal-title">Edit contact</h5>
               <button
                 type="button"
                 class="close"
                 aria-label="Close"
-                @click="showModal = false"
+                @click="handleCloseEdit"
               >
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -23,52 +23,52 @@
                 <input
                   type="text"
                   class="form-control"
-                  v-model="staffEdit.id"
+                  v-model="contactEdit.id"
                   disabled
                 />
               </div>
               <div class="mb-3 text-left">
-                <label class="form-label">Avatar</label>
-                <div class="mb-3 text-left">
-                  <div
-                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                  >
-                    Avatar Preview
-                  </div>
-                  <img :src="previewImage" class="edit-staff__img" />
-                </div>
-                <input
-                  type="file"
-                  class="form-control"
-                  accept="image/*"
-                  @change="uploadImage"
-                  id="file-input"
-                />
-              </div>
-              <div class="mb-3 text-left">
-                <label class="form-label">Name</label>
+                <label class="form-label"
+                  >Name <span style="color: #ff0000">*</span></label
+                >
                 <input
                   type="text"
                   class="form-control"
-                  v-model="staffEdit.name"
+                  v-model="contactEdit.name"
                   required
                 />
               </div>
               <div class="mb-3 text-left">
-                <label class="form-label">Position</label>
+                <label class="form-label"
+                  >Phone <span style="color: #ff0000">*</span></label
+                >
                 <input
                   type="text"
                   class="form-control"
-                  v-model="staffEdit.position"
+                  id="contact-phone"
+                  v-model="contactEdit.phone"
                   required
                 />
               </div>
               <div class="mb-3 text-left">
-                <label class="form-label">Office</label>
+                <label class="form-label"
+                  >Email <span style="color: #ff0000">*</span></label
+                >
+                <input
+                  type="email"
+                  class="form-control"
+                  v-model="contactEdit.email"
+                  required
+                />
+              </div>
+              <div class="mb-3 text-left">
+                <label class="form-label"
+                  >Description <span style="color: #ff0000">*</span></label
+                >
                 <input
                   type="text"
                   class="form-control"
-                  v-model="staffEdit.office"
+                  v-model="contactEdit.description"
                   required
                 />
               </div>
@@ -78,7 +78,7 @@
               <button
                 type="button"
                 class="btn btn-secondary"
-                @click="showModal = false"
+                @click="handleCloseEdit"
               >
                 Close
               </button>
@@ -100,44 +100,78 @@
 <script>
 import { mapActions } from "vuex";
 import ButtonEdit from "@/examples/ButtonAction/ButtonEdit.vue";
+import { useToast } from "vue-toastification";
 
 export default {
-  name: "edit-staff",
+  name: "edit-contact",
   components: { ButtonEdit },
+  setup() {
+    // Get toast interface
+    const toast = useToast();
+
+    // // Use it!
+    // toast("I'm a toast!");
+
+    // // or with options
+    // toast.success("My toast content", {
+    //   timeout: 2000,
+    // });
+
+    return { toast };
+  },
   data() {
     return {
-      staffEdit: {
-        id: this.staff.id,
-        avatar: this.staff.avatar,
-        name: this.staff.name,
-        position: this.staff.position,
-        office: this.staff.office,
+      contactEdit: {
+        id: this.contact.id,
+        name: this.contact.name,
+        phone: this.contact.phone,
+        email: this.contact.email,
+        description: this.contact.description,
       },
       showModal: false,
-      previewImage: this.staff.avatar,
     };
   },
-  props: ["staff"],
+  props: ["contact"],
 
   methods: {
-    ...mapActions(["editStaff"]),
+    ...mapActions(["editContact"]),
     handleEdit() {
       this.showModal = true;
     },
-    handleSaveEdit(e) {
-      e.preventDefault();
-      this.staffEdit.avatar = this.previewImage;
-      this.editStaff(this.staffEdit);
+    handleCloseEdit() {
       this.showModal = false;
+      this.contactEdit.name = this.contact.name;
+      this.contactEdit.phone = this.contact.phone;
+      this.contactEdit.email = this.contact.email;
+      this.contactEdit.description = this.contact.description;
     },
-    /**Handle upload avatar */
-    uploadImage(e) {
-      const image = e.target.files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(image);
-      reader.onload = (e) => {
-        this.previewImage = e.target.result;
-      };
+    handleSaveEdit() {
+      const regexMail = /^\w+([-]?\w+)*@\w+([-]?\w+)*(\.\w{2,3})+$/;
+      const contactPhone = document.querySelector("#contact-phone");
+      const regexPhone = /((09|03|07|08|05)+([0-9]{8})\b)/g;
+      if (
+        this.contactEdit.name != " " &&
+        this.contactEdit.name.trim() &&
+        this.contactEdit.phone != "" &&
+        this.contactEdit.phone.trim() &&
+        this.contactEdit.email != "" &&
+        this.contactEdit.email.trim() &&
+        this.contactEdit.description != "" &&
+        this.contactEdit.description.trim()
+      ) {
+        if (regexMail.test(this.contactEdit.email)) {
+          if (regexPhone.test(contactPhone.value) == false) {
+            this.toast.error("Số điện thoại không hợp lệ!");
+          } else {
+            this.editContact(this.contactEdit);
+            this.showModal = false;
+          }
+        } else {
+          this.toast.warning("Email invalidate");
+        }
+      } else {
+        this.toast.error("Vui lòng điền đầy đủ thông tin!");
+      }
     },
   },
 };
@@ -169,7 +203,7 @@ export default {
   display: table-cell;
   vertical-align: middle;
 }
-.edit-staff__img {
+.edit-contact__img {
   width: 10rem;
   height: 10rem;
   border-radius: 100%;
@@ -177,7 +211,7 @@ export default {
   margin: auto;
 }
 @media only screen and (max-width: 600px) {
-  .edit-staff__img {
+  .edit-contact__img {
     width: 14rem;
     height: 14rem;
   }

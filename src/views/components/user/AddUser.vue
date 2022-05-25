@@ -19,25 +19,20 @@
             </div>
             <div class="modal-body">
               <div class="mb-3">
-                <label class="form-label">ID</label>
+                <label class="form-label"
+                  >Email address <span style="color: #ff0000">*</span></label
+                >
                 <input
                   type="text"
-                  class="form-control"
-                  v-model="user.id"
-                  disabled
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Email address</label>
-                <input
-                  type="email"
                   class="form-control form-email"
                   required
                   v-model="user.email"
                 />
               </div>
               <div class="mb-3">
-                <label class="form-label">Password</label>
+                <label class="form-label"
+                  >Password <span style="color: #ff0000">*</span></label
+                >
                 <input
                   type="password"
                   class="form-control"
@@ -46,7 +41,9 @@
                 />
               </div>
               <div class="mb-3">
-                <label class="form-label">Role</label>
+                <label class="form-label"
+                  >Role <span style="color: #ff0000">*</span></label
+                >
                 <select class="form-select form-role" required>
                   <option selected disabled value="">Select Role</option>
                   <option
@@ -79,7 +76,6 @@
 </template>
 
 <script>
-import { v4 as uuidv4 } from "uuid";
 import { mapActions } from "vuex";
 import ButtonAdd from "@/examples/ButtonAction/ButtonAdd.vue";
 import { useToast } from "vue-toastification";
@@ -106,6 +102,7 @@ export default {
   data() {
     return {
       user: {
+        id: "",
         email: "",
         password: "",
         role: {},
@@ -116,7 +113,6 @@ export default {
   computed: mapGetters(["roleUser"]),
   methods: {
     ...mapActions(["addUser"]),
-    // let regex =  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     onSubmit(e) {
       e.preventDefault();
       const formRole = document.querySelector(".form-role");
@@ -127,30 +123,43 @@ export default {
         this.user.email != "" &&
         this.user.email.trim() &&
         this.user.password != "" &&
-        this.user.password.trim()
+        this.user.password.trim() &&
+        formRole.value != ""
       ) {
-        this.addUser({
-          id: this.user.id,
-          email: this.user.email,
-          password: this.user.password,
-          role: objRoleUser[0],
-        });
-        this.showModal = false;
+        const regexMail = /^\w+([-]?\w+)*@\w+([-]?\w+)*(\.\w{2,3})+$/;
+        const regexPass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        if (regexMail.test(this.user.email)) {
+          if (regexPass.test(this.user.password)) {
+            this.addUser({
+              id: this.user.id,
+              email: this.user.email.toLowerCase(),
+              password: this.user.password,
+              role: objRoleUser[0],
+            });
+            this.showModal = false;
+            const userLocal = JSON.parse(localStorage.getItem("user"));
+            userLocal.push(this.user);
+            localStorage.setItem("user", JSON.stringify(userLocal));
+            this.user.id = "";
+            this.user.email = "";
+            this.user.password = "";
+            formRole.value = "";
+            this.user.role = {};
+          } else {
+            this.toast.warning("Password invalidate");
+          }
+        } else {
+          this.toast.warning("Email invalidate");
+        }
       } else {
         this.toast.error("Vui lòng điền đầy đủ thông tin!");
       }
-      this.user.id = uuidv4();
-      this.user.email = "";
-      this.user.password = "";
-      this.user.role = {};
     },
     handleToggleModal() {
       this.showModal = true;
-      this.user.id = uuidv4();
     },
     handleChange() {
       this.showModal = false;
-      this.user.id = uuidv4();
     },
   },
 };

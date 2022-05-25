@@ -7,7 +7,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Add Staff</h5>
+              <h5 class="modal-title">Add Contact</h5>
               <button
                 type="button"
                 class="close"
@@ -19,72 +19,62 @@
             </div>
             <div class="modal-body">
               <div class="mb-3">
-                <label class="form-label">ID</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="staff.id"
-                  disabled
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Avatar</label>
-                <div class="mb-3">
-                  <div
-                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                  >
-                    Avatar Preview
-                  </div>
-                  <img :src="previewImage" class="add-staff__img" />
-                </div>
-                <input
-                  type="file"
-                  class="form-control"
-                  accept="image/*"
-                  @change="uploadImage"
-                  id="file-input"
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Name</label>
+                <label class="form-label"
+                  >Name <span style="color: #ff0000">*</span>
+                </label>
                 <input
                   type="text"
                   class="form-control"
                   required
-                  v-model="staff.name"
+                  v-model="contact.name"
                 />
               </div>
               <div class="mb-3">
-                <label class="form-label">Position</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="staff.position"
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Office</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="staff.office"
-                  required
-                />
-              </div>
-
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  @click="showModal = false"
+                <label class="form-label"
+                  >Phone <span style="color: #ff0000">*</span></label
                 >
-                  Close
-                </button>
-                <button type="button" class="btn btn-primary" @click="onSubmit">
-                  ADD
-                </button>
+                <input
+                  type="text"
+                  id="contact-phone"
+                  class="form-control"
+                  v-model="contact.phone"
+                  required
+                />
               </div>
+              <div class="mb-3">
+                <label class="form-label"
+                  >Email <span style="color: #ff0000">*</span></label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="contact.email"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label"
+                  >Description <span style="color: #ff0000">*</span></label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="contact.description"
+                  required
+                />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                @click="showModal = false"
+              >
+                Close
+              </button>
+              <button type="button" class="btn btn-primary" @click="onSubmit">
+                ADD
+              </button>
             </div>
           </div>
         </div>
@@ -94,10 +84,8 @@
 </template>
 
 <script>
-import { v4 as uuidv4 } from "uuid";
 import { mapActions } from "vuex";
 import ButtonAdd from "@/examples/ButtonAction/ButtonAdd.vue";
-import noAvatar from "../../../assets/img/no-avatar.png";
 import { useToast } from "vue-toastification";
 
 export default {
@@ -119,52 +107,62 @@ export default {
   },
   data() {
     return {
-      staff: {
+      contact: {
         name: "",
-        position: "",
-        office: "",
+        phone: "",
+        email: "",
+        description: "",
       },
       showModal: false,
-      previewImage: noAvatar,
     };
   },
   methods: {
-    ...mapActions(["addStaff"]),
-    onSubmit(e) {
-      e.preventDefault();
+    ...mapActions(["addContact"]),
+    onSubmit() {
       if (
-        this.staff.name != "" &&
-        this.staff.name.trim() &&
-        ((this.staff.position != "" && this.staff.position.trim()) ||
-          (this.staff.office != "" && this.staff.office.trim()))
+        this.contact.name != "" &&
+        this.contact.name.trim() &&
+        this.contact.phone != "" &&
+        this.contact.phone.trim() &&
+        this.contact.email != "" &&
+        this.contact.email.trim() &&
+        this.contact.description != "" &&
+        this.contact.description.trim()
       ) {
-        this.addStaff({
-          id: this.staff.id,
-          avatar: this.previewImage,
-          name: this.staff.name,
-          position: this.staff.position,
-          office: this.staff.office,
-        });
-        this.showModal = false;
+        const regexMail = /^\w+([-]?\w+)*@\w+([-]?\w+)*(\.\w{2,3})+$/;
+        const contactPhone = document.querySelector("#contact-phone");
+        const regexPhone = /((\+|)84|0[3|5|7|8|9])+([0-9]{8,9})\b/g;
+        if (regexMail.test(this.contact.email)) {
+          if (regexPhone.test(contactPhone.value) == false) {
+            this.toast.error("Số điện thoại không hợp lệ!");
+          } else {
+            this.addContact({
+              id: this.contact.id,
+              name: this.contact.name,
+              phone: this.contact.phone,
+              email: this.contact.email,
+              description: this.contact.description,
+            });
+            this.showModal = false;
+            this.contact.id = "";
+            this.contact.name = "";
+            this.contact.email = "";
+            this.contact.phone = "";
+            this.contact.description = "";
+          }
+        } else {
+          this.toast.warning("Email invalidate");
+        }
       } else {
+        console.log(this.contact.phone.length);
         this.toast.error("Vui lòng điền đầy đủ thông tin!");
       }
-      const inputFile = document.querySelector("#file-input");
-      inputFile.value = "";
-
-      this.staff.id = uuidv4();
-      this.previewImage = noAvatar;
-      this.staff.name = "";
-      this.staff.position = "";
-      this.staff.office = "";
     },
     handleToggleModal() {
       this.showModal = true;
-      this.staff.id = uuidv4();
     },
     handleChange() {
       this.showModal = false;
-      this.staff.id = uuidv4();
     },
     uploadImage(e) {
       const image = e.target.files[0];
@@ -221,20 +219,7 @@ export default {
   overflow-y: initial !important;
 }
 .modal-body {
-  height: 80vh;
+  /* height: 80vh; */
   overflow-y: auto;
-}
-.add-staff__img {
-  width: 10rem;
-  height: 10rem;
-  border-radius: 100%;
-  display: flex;
-  margin: auto;
-}
-@media only screen and (max-width: 600px) {
-  .add-staff__img {
-    width: 14rem;
-    height: 14rem;
-  }
 }
 </style>

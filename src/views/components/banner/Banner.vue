@@ -1,7 +1,7 @@
 <template>
   <div class="card mb-4">
     <div class="card-header pb-0 table-header">
-      <h1>Banners</h1>
+      <h1>Banner</h1>
       <AddBanner />
     </div>
     <div class="card-body px-0 pt-0 pb-2">
@@ -10,34 +10,17 @@
           <thead>
             <tr>
               <th
-                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                v-for="item in bannerTable"
+                :key="item"
+                :class="item.class"
+                @click="sort(item.name)"
               >
-                ID
-              </th>
-              <th
-                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-              >
-                Slogan
-              </th>
-              <th
-                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-              >
-                Description
-              </th>
-              <th
-                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-              >
-                Image
-              </th>
-              <th
-                class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2"
-              >
-                Action
+                {{ item.name }}
               </th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in banners" :key="item.id">
+            <tr v-for="item in sortedBanner" :key="item.id">
               <td class="table-id">
                 {{ item.id }}
               </td>
@@ -66,13 +49,71 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "banner-dashboard",
-
+  data() {
+    return {
+      bannerTable: [
+        {
+          class:
+            "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7",
+          name: "id",
+        },
+        {
+          class:
+            "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2",
+          name: "slogan",
+        },
+        {
+          class:
+            "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2",
+          name: "description",
+        },
+        {
+          class:
+            "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2",
+          name: "image",
+        },
+        {
+          class:
+            "text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2",
+          name: "action",
+        },
+      ],
+      //Sort Banner
+      currentSort: "id",
+      currentSortDir: "asc",
+    };
+  },
   components: {
     AddBanner,
     EditBanner,
     DeleteBanner,
   },
-  computed: mapGetters(["banners"]),
+  computed: {
+    ...mapGetters(["banners"]),
+    sortedBanner() {
+      return this.sortedBanner2();
+    },
+  },
+  methods: {
+    //Sort Banner
+    sort: function (s) {
+      //  if s == current sort, reverse
+      if (s === this.currentSort) {
+        this.currentSortDir = this.currentSortDir === "asc" ? "desc" : "asc";
+      }
+      this.currentSort = s;
+    },
+    //Sort Banner
+    sortedBanner2() {
+      return this.banners.sort((a, b) => {
+        let modifier = 1;
+        if (this.currentSortDir === "desc") modifier = -1;
+        if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
+        if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+        return 0;
+      });
+    },
+  },
 };
 </script>
 <style scoped>
@@ -103,5 +144,6 @@ export default {
   width: 10rem;
   height: 10rem;
   border-radius: 5px;
+  object-fit: contain;
 }
 </style>

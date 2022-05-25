@@ -7,7 +7,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Delete Staff</h5>
+              <h5 class="modal-title">Delete Partner</h5>
               <button
                 type="button"
                 class="close"
@@ -18,7 +18,7 @@
               </button>
             </div>
             <div class="modal-body">
-              <div class="mb-3">Bạn có chắc muốn xóa staff này ?</div>
+              <div class="mb-3">Bạn có chắc muốn xóa partner này ?</div>
             </div>
             <div class="modal-footer">
               <button
@@ -66,8 +66,7 @@ export default {
     handleDelete() {
       this.showModal = true;
     },
-    handleDeletePartner(e) {
-      e.preventDefault();
+    handleDeletePartner() {
       this.deletePartner(this.partnerDelete);
     },
   },

@@ -1,7 +1,7 @@
 <template>
   <div class="card mb-4">
     <div class="card-header pb-0 table-header">
-      <h1>Staffs</h1>
+      <h1>Contact</h1>
       <AddContact />
     </div>
     <div class="card-body px-0 pt-0 pb-2">
@@ -9,25 +9,66 @@
         <table class="table align-items-center justify-content-center mb-0">
           <thead>
             <tr>
-              <th v-for="item in thTable" :key="item" :class="item.class">
+              <th
+                v-for="item in thTableContact"
+                :key="item"
+                :class="item.class"
+                @click="sort(item.name)"
+              >
                 {{ item.name }}
               </th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in contacts" :key="item.id">
+            <tr v-for="item in sortedContact" :key="item.id">
               <td class="table-id">
                 {{ item.id }}
               </td>
-              <td>
-                <img :src="item.avatar" alt="" class="contact__img" />
+              <td>{{ item.name }}</td>
+              <td>{{ item.phone }}</td>
+              <td>{{ item.email }}</td>
+              <td>{{ item.description }}</td>
+              <td class="table-action">
+                <EditContact :contact="item" />
+                <DeleteContact :contact="item" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="card mb-4">
+    <div class="card-header pb-0 table-header">
+      <h1>Contact Info</h1>
+      <!-- <AddContact /> -->
+    </div>
+    <div class="card-body px-0 pt-0 pb-2">
+      <div class="table-responsive p-0">
+        <table class="table align-items-center justify-content-center mb-0">
+          <thead>
+            <tr>
+              <th
+                v-for="item in thTableContactInfo"
+                :key="item"
+                :class="item.class"
+                @click="sortInfo(item.name)"
+              >
+                {{ item.name }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in sortedInfo" :key="item.id">
+              <td class="table-id">
+                {{ item.id }}
               </td>
               <td>{{ item.name }}</td>
-              <td>{{ item.position }}</td>
-              <td>{{ item.office }}</td>
+              <td>{{ item.content }}</td>
+
               <td class="table-action">
-                <!-- <EditContact :contact="item" />
-                <DeleteContact :contact="item" /> -->
+                <EditContactInfo :contactInfo="item" />
+                <!-- <DeleteContact :contact="item" /> -->
               </td>
             </tr>
           </tbody>
@@ -39,8 +80,9 @@
 
 <script>
 import AddContact from "./AddContact.vue";
-// import EditContact from "./EditContact.vue";
-// import DeleteContact from "./DeleteContact.vue";
+import EditContact from "./EditContact.vue";
+import EditContactInfo from "./EditContactInfo.vue";
+import DeleteContact from "./DeleteContact.vue";
 import { mapGetters } from "vuex";
 
 export default {
@@ -48,13 +90,22 @@ export default {
 
   components: {
     AddContact,
-    // EditContact,
-    // DeleteContact
+    EditContact,
+    EditContactInfo,
+    DeleteContact,
   },
-  computed: mapGetters(["contacts"]),
+  computed: {
+    ...mapGetters(["contacts", "contactInfos"]),
+    sortedContact() {
+      return this.sortedContact2();
+    },
+    sortedInfo() {
+      return this.sortedInfo2();
+    },
+  },
   data() {
     return {
-      thTable: [
+      thTableContact: [
         {
           class:
             "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7",
@@ -78,15 +129,86 @@ export default {
         {
           class:
             "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2",
-          name: "topic",
+          name: "description",
         },
         {
           class:
             "text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2",
-          name: "description",
+          name: "action",
         },
       ],
+      thTableContactInfo: [
+        {
+          class:
+            "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7",
+          name: "id",
+        },
+        {
+          class:
+            "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2",
+          name: "name",
+        },
+        {
+          class:
+            "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2",
+          name: "content",
+        },
+        {
+          class:
+            "text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2",
+          name: "action",
+        },
+      ],
+      //Sort Contact
+      currentSort: "id",
+      currentSortDir: "asc",
+      //Sort Info
+      currentSortInfo: "id",
+      currentSortDirInfo: "asc",
+
+      currentPage: 1,
     };
+  },
+  methods: {
+    //Sort Contact
+    sort: function (s) {
+      //  if s == current sort, reverse
+      if (s === this.currentSort) {
+        this.currentSortDir = this.currentSortDir === "asc" ? "desc" : "asc";
+      }
+      this.currentSort = s;
+    },
+    //Sort Info
+    sortInfo: function (s) {
+      //  if s == current sort, reverse
+      if (s === this.currentSortInfo) {
+        this.currentSortDirInfo =
+          this.currentSortDirInfo === "asc" ? "desc" : "asc";
+      }
+      this.currentSortInfo = s;
+    },
+    //Sort Contact
+    sortedContact2() {
+      return this.contacts.sort((a, b) => {
+        let modifier = 1;
+        if (this.currentSortDir === "desc") modifier = -1;
+        if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
+        if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+        return 0;
+      });
+    },
+    //Sort Info
+    sortedInfo2() {
+      return this.contactInfos.sort((a, b) => {
+        let modifier = 1;
+        if (this.currentSortDirInfo === "desc") modifier = -1;
+        if (a[this.currentSortInfo] < b[this.currentSortInfo])
+          return -1 * modifier;
+        if (a[this.currentSortInfo] > b[this.currentSortInfo])
+          return 1 * modifier;
+        return 0;
+      });
+    },
   },
 };
 </script>

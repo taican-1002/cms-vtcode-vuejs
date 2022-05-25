@@ -1,26 +1,26 @@
 var idUser = 4;
-
 const userModule = {
   state: {
     users: [
       {
         id: 1,
-        email: "john@gmail.com",
+        email: "admin@gmail.com",
         role: {
           id: 1,
           name: "admin",
         },
-        password: "toilajohn",
+        password: "Admin@123",
       },
       {
         id: 2,
-        email: "alex@yahoo.com",
+        email: "john@gmail.com",
         role: {
           id: 2,
           name: "client",
         },
-        password: "alexlatoi",
+        password: "toilajohn",
       },
+
       {
         id: 3,
         email: "shia@gmai.com",

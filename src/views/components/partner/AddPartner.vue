@@ -19,16 +19,9 @@
             </div>
             <div class="modal-body">
               <div class="mb-3">
-                <label class="form-label">ID</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="partner.id"
-                  disabled
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Name</label>
+                <label class="form-label"
+                  >Name <span style="color: #ff0000">*</span></label
+                >
                 <input
                   type="text"
                   class="form-control"
@@ -75,7 +68,6 @@
 </template>
 
 <script>
-import { v4 as uuidv4 } from "uuid";
 import { mapActions } from "vuex";
 import ButtonAdd from "@/examples/ButtonAction/ButtonAdd.vue";
 import noImage from "../../../assets/img/no-image.png";
@@ -125,17 +117,15 @@ export default {
       const inputFile = document.querySelector("#file-input");
       inputFile.value = "";
 
-      this.partner.id = uuidv4();
+      this.partner.id = "";
       this.previewImage = noImage;
       this.partner.name = "";
     },
     handleToggleModal() {
       this.showModal = true;
-      this.partner.id = uuidv4();
     },
     handleChange() {
       this.showModal = false;
-      this.partner.id = uuidv4();
     },
     uploadImage(e) {
       const image = e.target.files[0];

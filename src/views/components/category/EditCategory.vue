@@ -12,7 +12,7 @@
                 type="button"
                 class="close"
                 aria-label="Close"
-                @click="showModal = false"
+                @click="handleCloseEdit"
               >
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -28,7 +28,9 @@
                 />
               </div>
               <div class="mb-3">
-                <label class="form-label">Name</label>
+                <label class="form-label"
+                  >Name <span style="color: #ff0000">*</span></label
+                >
                 <input
                   type="text"
                   class="form-control"
@@ -51,7 +53,7 @@
               <button
                 type="button"
                 class="btn btn-secondary"
-                @click="showModal = false"
+                @click="handleCloseEdit"
               >
                 Close
               </button>
@@ -73,6 +75,7 @@
 <script>
 import { mapActions } from "vuex";
 import ButtonEdit from "@/examples/ButtonAction/ButtonEdit.vue";
+import { useToast } from "vue-toastification";
 
 export default {
   name: "EditCategory",
@@ -87,15 +90,29 @@ export default {
       showModal: false,
     };
   },
+  setup() {
+    const toast = useToast();
+
+    return { toast };
+  },
   props: ["category"],
   methods: {
     ...mapActions(["editCategory"]),
     handleEdit() {
       this.showModal = true;
     },
-    handleSaveEdit() {
-      this.editCategory(this.categoryEdit);
+    handleCloseEdit() {
       this.showModal = false;
+      this.categoryEdit.name = this.category.name;
+      this.categoryEdit.seo = this.category.seo;
+    },
+    handleSaveEdit() {
+      if (this.categoryEdit.name != "" && this.categoryEdit.name.trim()) {
+        this.editCategory(this.categoryEdit);
+        this.showModal = false;
+      } else {
+        this.toast.error("Vui lòng điền tên!");
+      }
     },
     ToSeoUrl(str) {
       // make the url lowercase

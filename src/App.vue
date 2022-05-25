@@ -66,8 +66,16 @@ export default {
 </script>
 
 <style>
+td,
+th {
+  padding: 5px;
+}
+
+th {
+  cursor: pointer;
+}
 .g-sidenav-show:not(.rtl) .sidenav {
-  transform: translateX(-17.125rem);
+  transform: translateX(-15rem);
 }
 .g-sidenav-show.g-sidenav-pinned .sidenav {
   transform: translateX(0);
@@ -81,6 +89,20 @@ button {
 .ql-toolbar.ql-snow {
   display: flex;
   flex-wrap: wrap;
+}
+.ql-snow .ql-tooltip.ql-flip {
+  transform: translate(50%, 20px) !important;
+}
+.dropdown .dropdown-menu.dropdown-menu-end:before {
+  right: 40px !important;
+}
+@media only screen and (max-width: 1199.98px) {
+  .g-sidenav-show:not(.rtl) .sidenav {
+    transform: translateX(-15rem) !important;
+  }
+  .g-sidenav-show.g-sidenav-pinned .sidenav {
+    transform: translateX(0) !important;
+  }
 }
 @media only screen and (max-width: 600px) {
   .configurator {

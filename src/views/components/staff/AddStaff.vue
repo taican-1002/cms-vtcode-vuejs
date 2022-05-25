@@ -19,15 +19,6 @@
             </div>
             <div class="modal-body">
               <div class="mb-3">
-                <label class="form-label">ID</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="staff.id"
-                  disabled
-                />
-              </div>
-              <div class="mb-3">
                 <label class="form-label">Avatar</label>
                 <div class="mb-3">
                   <div
@@ -46,7 +37,9 @@
                 />
               </div>
               <div class="mb-3">
-                <label class="form-label">Name</label>
+                <label class="form-label"
+                  >Name <span style="color: #ff0000">*</span></label
+                >
                 <input
                   type="text"
                   class="form-control"
@@ -55,7 +48,9 @@
                 />
               </div>
               <div class="mb-3">
-                <label class="form-label">Position</label>
+                <label class="form-label"
+                  >Position <span style="color: #ff0000">*</span></label
+                >
                 <input
                   type="text"
                   class="form-control"
@@ -64,7 +59,9 @@
                 />
               </div>
               <div class="mb-3">
-                <label class="form-label">Office</label>
+                <label class="form-label"
+                  >Office <span style="color: #ff0000">*</span></label
+                >
                 <input
                   type="text"
                   class="form-control"
@@ -94,7 +91,6 @@
 </template>
 
 <script>
-import { v4 as uuidv4 } from "uuid";
 import { mapActions } from "vuex";
 import ButtonAdd from "@/examples/ButtonAction/ButtonAdd.vue";
 import noAvatar from "../../../assets/img/no-avatar.png";
@@ -135,8 +131,10 @@ export default {
       if (
         this.staff.name != "" &&
         this.staff.name.trim() &&
-        ((this.staff.position != "" && this.staff.position.trim()) ||
-          (this.staff.office != "" && this.staff.office.trim()))
+        this.staff.position != "" &&
+        this.staff.position.trim() &&
+        this.staff.office != "" &&
+        this.staff.office.trim()
       ) {
         this.addStaff({
           id: this.staff.id,
@@ -146,25 +144,21 @@ export default {
           office: this.staff.office,
         });
         this.showModal = false;
+        const inputFile = document.querySelector("#file-input");
+        inputFile.value = "";
+        this.previewImage = noAvatar;
+        this.staff.name = "";
+        this.staff.position = "";
+        this.staff.office = "";
       } else {
         this.toast.error("Vui lòng điền đầy đủ thông tin!");
       }
-      const inputFile = document.querySelector("#file-input");
-      inputFile.value = "";
-
-      this.staff.id = uuidv4();
-      this.previewImage = noAvatar;
-      this.staff.name = "";
-      this.staff.position = "";
-      this.staff.office = "";
     },
     handleToggleModal() {
       this.showModal = true;
-      this.staff.id = uuidv4();
     },
     handleChange() {
       this.showModal = false;
-      this.staff.id = uuidv4();
     },
     uploadImage(e) {
       const image = e.target.files[0];
@@ -230,6 +224,7 @@ export default {
   border-radius: 100%;
   display: flex;
   margin: auto;
+  object-fit: contain;
 }
 @media only screen and (max-width: 600px) {
   .add-staff__img {

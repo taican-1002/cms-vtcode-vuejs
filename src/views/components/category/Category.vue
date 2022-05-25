@@ -10,29 +10,17 @@
           <thead>
             <tr>
               <th
-                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                v-for="item in cateTable"
+                :key="item"
+                :class="item.class"
+                @click="sort(item.name)"
               >
-                ID
-              </th>
-              <th
-                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-              >
-                Name
-              </th>
-              <th
-                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-              >
-                Seo
-              </th>
-              <th
-                class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2"
-              >
-                Action
+                {{ item.name }}
               </th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in categories" :key="item.id">
+            <tr v-for="item in sortedCategory" :key="item.id">
               <td class="table-id">
                 {{ item.id }}
               </td>
@@ -59,7 +47,61 @@ import { mapGetters } from "vuex";
 export default {
   name: "category-dashboard",
   components: { AddCategory, EditCategory, DeleteCategory },
-  computed: mapGetters(["categories"]),
+  computed: {
+    ...mapGetters(["categories"]),
+    sortedCategory() {
+      return this.sortedCategory2();
+    },
+  },
+  data() {
+    return {
+      cateTable: [
+        {
+          class:
+            "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7",
+          name: "id",
+        },
+        {
+          class:
+            "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2",
+          name: "name",
+        },
+        {
+          class:
+            "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2",
+          name: "seo",
+        },
+        {
+          class:
+            "text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2",
+          name: "action",
+        },
+      ],
+      //Sort Category
+      currentSort: "id",
+      currentSortDir: "asc",
+    };
+  },
+  methods: {
+    //Sort Category
+    sort: function (s) {
+      //  if s == current sort, reverse
+      if (s === this.currentSort) {
+        this.currentSortDir = this.currentSortDir === "asc" ? "desc" : "asc";
+      }
+      this.currentSort = s;
+    },
+    //Sort Category
+    sortedCategory2() {
+      return this.categories.sort((a, b) => {
+        let modifier = 1;
+        if (this.currentSortDir === "desc") modifier = -1;
+        if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
+        if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+        return 0;
+      });
+    },
+  },
 };
 </script>
 <style scoped>

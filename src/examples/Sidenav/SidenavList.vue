@@ -27,6 +27,14 @@
       </li>
 
       <li class="nav-item">
+        <sidenav-collapse navText="Header" :to="{ name: 'Header' }">
+          <template #icon>
+            <icon-header />
+          </template>
+        </sidenav-collapse>
+      </li>
+
+      <li class="nav-item">
         <sidenav-collapse navText="Footer" :to="{ name: 'Footer' }">
           <template #icon>
             <icon-footer />
@@ -34,7 +42,7 @@
         </sidenav-collapse>
       </li>
 
-      <li class="mt-3 nav-item">
+      <!-- <li class="mt-3 nav-item">
         <h6
           class="text-xs ps-4 text-uppercase font-weight-bolder opacity-6"
           :class="this.$store.state.isRTL ? 'me-4' : 'ms-2'"
@@ -42,13 +50,7 @@
           PAGES
         </h6>
       </li>
-      <li class="nav-item">
-        <sidenav-collapse navText="Profile" :to="{ name: 'Profile' }">
-          <template #icon>
-            <customer-support />
-          </template>
-        </sidenav-collapse>
-      </li>
+
       <li class="nav-item">
         <sidenav-collapse navText="Sign In" :to="{ name: 'Sign In' }">
           <template #icon>
@@ -57,12 +59,15 @@
         </sidenav-collapse>
       </li>
       <li class="nav-item">
-        <sidenav-collapse navText="Sign Up" :to="{ name: 'Sign Up' }">
+        <sidenav-collapse
+          navText="Change PassWord"
+          :to="{ name: 'Change PassWord' }"
+        >
           <template #icon>
             <spaceship />
           </template>
         </sidenav-collapse>
-      </li>
+      </li> -->
     </ul>
   </div>
 </template>
@@ -71,11 +76,11 @@ import SidenavCollapse from "./SidenavCollapse.vue";
 // import SidenavCard from "./SidenavCard.vue";
 import Shop from "../../components/Icon/Shop.vue";
 import Office from "../../components/Icon/Office.vue";
-import CustomerSupport from "../../components/Icon/CustomerSupport.vue";
-import Document from "../../components/Icon/Document.vue";
-import Spaceship from "../../components/Icon/Spaceship.vue";
+// import Document from "../../components/Icon/Document.vue";
+// import Spaceship from "../../components/Icon/Spaceship.vue";
 import IconBanner from "../../components/Icon/IconBanner.vue";
 import IconFooter from "../../components/Icon/IconFooter.vue";
+import IconHeader from "../../components/Icon/IconHeader.vue";
 
 export default {
   name: "SidenavList",
@@ -89,13 +94,13 @@ export default {
   },
   components: {
     SidenavCollapse,
+    IconHeader,
     IconBanner,
     IconFooter,
     Shop,
     Office,
-    CustomerSupport,
-    Document,
-    Spaceship,
+    // Document,
+    // Spaceship,
   },
   methods: {
     getRoute() {

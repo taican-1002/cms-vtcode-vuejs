@@ -1,3 +1,5 @@
+var idStaff = 4;
+
 const staffModule = {
   state: {
     staffs: [
@@ -33,6 +35,7 @@ const staffModule = {
   mutations: {
     // USER
     ADD_STAFF(state, newStaff) {
+      newStaff.id = idStaff++;
       state.staffs.push(newStaff);
     },
     EDIT_STAFF(state, newStaff) {

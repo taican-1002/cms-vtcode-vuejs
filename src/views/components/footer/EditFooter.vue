@@ -13,7 +13,7 @@
                 type="button"
                 class="close"
                 aria-label="Close"
-                @click="showModal = false"
+                @click="handleCloseEdit"
               >
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -33,7 +33,7 @@
                 </div>
                 <div class="mb-3">
                   <label for="exampleInputEmail1" class="form-label"
-                    >Name</label
+                    >Name <span style="color: #ff0000">*</span></label
                   >
                   <input
                     type="text"
@@ -64,44 +64,33 @@
                             </button>
                           </div>
                           <div class="modal-body">
-                            <div>
-                              <div class="mb-3">
-                                <label class="form-label">Icon</label>
-                                <Multiselect
-                                  class="description-icon"
-                                  v-model="valueDes"
-                                  mode="tags"
-                                  :searchable="true"
-                                  :createTag="true"
-                                  :options="options"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Text</label>
-                                <input
-                                  type="text"
-                                  class="form-control add-des__text"
-                                />
-                              </div>
-
-                              <div class="modal-footer">
-                                <button
-                                  type="button"
-                                  class="btn btn-secondary"
-                                  @click="showModalAddDes = false"
-                                >
-                                  Close
-                                </button>
-
-                                <button
-                                  type="button"
-                                  class="btn btn-primary"
-                                  @click="onSubmitAddModalDes"
-                                >
-                                  ADD
-                                </button>
-                              </div>
+                            <div class="mb-3">
+                              <label class="form-label"
+                                >Text
+                                <span style="color: #ff0000">*</span></label
+                              >
+                              <input
+                                type="text"
+                                class="form-control add-des__text"
+                              />
                             </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button
+                              type="button"
+                              class="btn btn-secondary"
+                              @click="showModalAddDes = false"
+                            >
+                              Close
+                            </button>
+
+                            <button
+                              type="button"
+                              class="btn btn-primary"
+                              @click="onSubmitAddModalDes"
+                            >
+                              ADD
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -115,7 +104,7 @@
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h5 class="modal-title">Edit Icon</h5>
+                            <h5 class="modal-title">Edit Description</h5>
                             <button
                               type="button"
                               class="close"
@@ -126,45 +115,34 @@
                             </button>
                           </div>
                           <div class="modal-body">
-                            <div>
-                              <div class="mb-3">
-                                <label class="form-label">Icon</label>
-                                <Multiselect
-                                  class="description-icon"
-                                  v-model="value"
-                                  mode="tags"
-                                  :searchable="true"
-                                  :createTag="true"
-                                  :options="options"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label">Text</label>
-                                <input
-                                  type="text"
-                                  class="form-control des-text"
-                                  v-model="textDes"
-                                />
-                              </div>
-
-                              <div class="modal-footer">
-                                <button
-                                  type="button"
-                                  class="btn btn-secondary"
-                                  @click="showModalIcon = false"
-                                >
-                                  Close
-                                </button>
-
-                                <button
-                                  type="button"
-                                  class="btn btn-primary"
-                                  @click="onSubmitModalDes"
-                                >
-                                  SAVE
-                                </button>
-                              </div>
+                            <div class="mb-3">
+                              <label class="form-label"
+                                >Text
+                                <span style="color: #ff0000">*</span></label
+                              >
+                              <input
+                                type="text"
+                                class="form-control des-text"
+                                v-model="textDes"
+                              />
                             </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button
+                              type="button"
+                              class="btn btn-secondary"
+                              @click="showModalIcon = false"
+                            >
+                              Close
+                            </button>
+
+                            <button
+                              type="button"
+                              class="btn btn-primary"
+                              @click="onSubmitModalDes"
+                            >
+                              SAVE
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -223,20 +201,8 @@
                   v-for="(desItem, index) in editItem.description"
                   :key="index"
                 >
-                  <div class="description-icon">
-                    Icon: &nbsp;
-                    <div
-                      v-for="(iconItem, index) in desItem.icon"
-                      :key="index"
-                      class="description-icon__item"
-                    >
-                      <font-awesome-icon :icon="iconItem" />
-                      &nbsp;
-                    </div>
-                  </div>
-
                   <div class="mb-3 description-text">
-                    Text: {{ desItem.text }}
+                    {{ desItem.text }}
                   </div>
                   <ButtonEdit
                     @click="handleOpenModalDes(desItem, index)"
@@ -252,7 +218,7 @@
               <button
                 type="button"
                 class="btn btn-secondary"
-                @click="showModal = false"
+                @click="handleCloseEdit"
               >
                 Close
               </button>
@@ -272,11 +238,16 @@ import { mapActions } from "vuex";
 import ButtonEdit from "@/examples/ButtonAction/ButtonEdit.vue";
 import ButtonDelete from "@/examples/ButtonAction/ButtonDelete.vue";
 import ButtonAdd from "@/examples/ButtonAction/ButtonAdd.vue";
-import Multiselect from "@vueform/multiselect";
+import { useToast } from "vue-toastification";
 
 export default {
   name: "EditFooter",
-  components: { ButtonEdit, ButtonAdd, ButtonDelete, Multiselect },
+  components: { ButtonEdit, ButtonAdd, ButtonDelete },
+  setup() {
+    const toast = useToast();
+
+    return { toast };
+  },
   data() {
     return {
       itemEditDel: {
@@ -284,7 +255,6 @@ export default {
         item: "",
       },
       value: null,
-      valueDes: null,
       options: ["bone", "book-open", "certificate", "phone"],
       editItem: {
         id: this.footerItem.id,
@@ -305,8 +275,17 @@ export default {
 
     /**Modal */
     onSubmit() {
-      this.editFooter(this.editItem);
+      if (this.editItem.name != "" && this.editItem.name.trim()) {
+        this.editFooter(this.editItem);
+        this.showModal = false;
+      } else {
+        this.toast.error("Vui lòng điền đầy đủ thông tin!");
+      }
+    },
+    handleCloseEdit() {
       this.showModal = false;
+      this.editItem.name = this.footerItem.name;
+      this.editItem.description = this.footerItem.description;
     },
 
     /**Modal */
@@ -319,19 +298,25 @@ export default {
     /**Modal Description  */
     onSubmitAddModalDes() {
       const addDesText = document.querySelector(".add-des__text");
-      this.editItem.description.push({
-        icon: this.valueDes,
-        text: addDesText.value,
-      });
-      this.showModalAddDes = false;
+      if (addDesText.value != "" && addDesText.value.trim()) {
+        this.editItem.description.push({
+          text: addDesText.value,
+        });
+        this.showModalAddDes = false;
+      } else {
+        this.toast.error("Vui lòng điền đầy đủ thông tin!");
+      }
     },
     /**Modal Description */
     onSubmitModalDes() {
-      this.editItem.description[this.itemEditDel.index] = {
-        icon: this.value,
-        text: this.textDes,
-      };
-      this.showModalIcon = false;
+      if (this.textDes != "" && this.textDes.trim()) {
+        this.editItem.description[this.itemEditDel.index] = {
+          text: this.textDes,
+        };
+        this.showModalIcon = false;
+      } else {
+        this.toast.error("Vui lòng điền đầy đủ thông tin!");
+      }
     },
 
     /**Modal Add Des */

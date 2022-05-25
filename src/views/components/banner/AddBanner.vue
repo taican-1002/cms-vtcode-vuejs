@@ -7,7 +7,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Add User</h5>
+              <h5 class="modal-title">Add Banner</h5>
               <button
                 type="button"
                 class="close"
@@ -37,7 +37,9 @@
                 />
               </div>
               <div class="mb-3">
-                <label class="form-label">Slogan</label>
+                <label class="form-label"
+                  >Slogan <span style="color: #ff0000">*</span></label
+                >
                 <input
                   type="text"
                   class="form-control form-email"
@@ -46,7 +48,9 @@
                 />
               </div>
               <div class="mb-3">
-                <label class="form-label">Description</label>
+                <label class="form-label"
+                  >Description <span style="color: #ff0000">*</span></label
+                >
                 <input
                   type="text"
                   class="form-control"
@@ -54,18 +58,18 @@
                   required
                 />
               </div>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                @click="showModal = false"
-              >
-                Close
-              </button>
-              <button type="button" class="btn btn-primary" @click="onSubmit">
-                ADD
-              </button>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  @click="showModal = false"
+                >
+                  Close
+                </button>
+                <button type="button" class="btn btn-primary" @click="onSubmit">
+                  ADD
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -127,12 +131,14 @@ export default {
           image: this.previewImage,
         });
         this.showModal = false;
+        const inputFile = document.querySelector("#file-input");
+        inputFile.value = "";
+        this.banner.slogan = "";
+        this.banner.description = "";
+        this.previewImage = noImage;
       } else {
         this.toast.error("Vui lòng điền đầy đủ thông tin!");
       }
-      this.banner.slogan = "";
-      this.banner.description = "";
-      this.previewImage = noImage;
     },
     handleToggleModal() {
       this.showModal = true;
@@ -167,6 +173,15 @@ export default {
   display: table;
   transition: opacity 0.3s ease;
 }
+/* Important part */
+.modal-dialog {
+  overflow-y: initial !important;
+  margin: 0.75rem auto;
+}
+.modal-body {
+  overflow-y: auto;
+  height: 80vh;
+}
 
 .modal-wrapper {
   display: table-cell;
@@ -177,6 +192,7 @@ export default {
   height: 20rem;
   display: flex;
   margin: auto;
+  object-fit: contain;
 }
 @media only screen and (max-width: 600px) {
   .add-banner__img {

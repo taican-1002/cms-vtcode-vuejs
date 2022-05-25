@@ -12,7 +12,7 @@
                 type="button"
                 class="close"
                 aria-label="Close"
-                @click="showModal = false"
+                @click="handleCloseEdit"
               >
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -46,7 +46,9 @@
                 />
               </div>
               <div class="mb-3 text-left">
-                <label class="form-label">Name</label>
+                <label class="form-label"
+                  >Name <span style="color: #ff0000">*</span></label
+                >
                 <input
                   type="text"
                   class="form-control"
@@ -55,7 +57,9 @@
                 />
               </div>
               <div class="mb-3 text-left">
-                <label class="form-label">Position</label>
+                <label class="form-label"
+                  >Position <span style="color: #ff0000">*</span></label
+                >
                 <input
                   type="text"
                   class="form-control"
@@ -64,7 +68,9 @@
                 />
               </div>
               <div class="mb-3 text-left">
-                <label class="form-label">Office</label>
+                <label class="form-label"
+                  >Office <span style="color: #ff0000">*</span></label
+                >
                 <input
                   type="text"
                   class="form-control"
@@ -78,7 +84,7 @@
               <button
                 type="button"
                 class="btn btn-secondary"
-                @click="showModal = false"
+                @click="handleCloseEdit"
               >
                 Close
               </button>
@@ -100,10 +106,16 @@
 <script>
 import { mapActions } from "vuex";
 import ButtonEdit from "@/examples/ButtonAction/ButtonEdit.vue";
+import { useToast } from "vue-toastification";
 
 export default {
   name: "edit-staff",
   components: { ButtonEdit },
+  setup() {
+    const toast = useToast();
+
+    return { toast };
+  },
   data() {
     return {
       staffEdit: {
@@ -124,11 +136,28 @@ export default {
     handleEdit() {
       this.showModal = true;
     },
-    handleSaveEdit(e) {
-      e.preventDefault();
-      this.staffEdit.avatar = this.previewImage;
-      this.editStaff(this.staffEdit);
+    handleCloseEdit() {
       this.showModal = false;
+      this.staffEdit.name = this.staff.name;
+      this.staffEdit.position = this.staff.position;
+      this.staffEdit.office = this.staff.office;
+      this.previewImage = this.staff.avatar;
+    },
+    handleSaveEdit() {
+      this.staffEdit.avatar = this.previewImage;
+      if (
+        this.staffEdit.name != "" &&
+        this.staffEdit.name.trim() &&
+        this.staffEdit.position != "" &&
+        this.staffEdit.position.trim() &&
+        this.staffEdit.office != "" &&
+        this.staffEdit.office.trim()
+      ) {
+        this.editStaff(this.staffEdit);
+        this.showModal = false;
+      } else {
+        this.toast.error("Vui lòng điền đầy đủ thông tin!");
+      }
     },
     /**Handle upload avatar */
     uploadImage(e) {
@@ -164,7 +193,15 @@ export default {
   display: table;
   transition: opacity 0.3s ease;
 }
-
+/* Important part */
+.modal-dialog {
+  overflow-y: auto !important;
+  margin: 0.75rem auto !important;
+}
+.modal-body {
+  height: 80vh;
+  overflow-y: auto;
+}
 .modal-wrapper {
   display: table-cell;
   vertical-align: middle;
@@ -175,6 +212,7 @@ export default {
   border-radius: 100%;
   display: flex;
   margin: auto;
+  object-fit: contain;
 }
 @media only screen and (max-width: 600px) {
   .edit-staff__img {

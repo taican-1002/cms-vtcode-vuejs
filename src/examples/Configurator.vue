@@ -8,10 +8,6 @@
     </a>
     <div class="shadow-lg card blur">
       <div class="pt-3 pb-0 bg-transparent card-header">
-        <div class="float-start">
-          <h5 class="mt-3 mb-0">Soft UI Configurator</h5>
-          <p>See our dashboard options.</p>
-        </div>
         <div class="mt-4 float-end" @click="toggle">
           <button class="p-0 btn btn-link text-dark fixed-plugin-close-button">
             <i class="fa fa-close"></i>
@@ -19,7 +15,6 @@
         </div>
         <!-- End Toggle Button -->
       </div>
-      <hr class="my-1 horizontal dark" />
       <div class="pt-0 card-body pt-sm-3">
         <!-- Sidebar Backgrounds -->
         <div>
@@ -62,107 +57,23 @@
             ></span>
           </div>
         </a>
-        <!-- Sidenav Type -->
-        <div class="mt-3">
-          <h6 class="mb-0">Sidenav Type</h6>
-          <p class="text-sm">Choose between 2 different sidenav types.</p>
-        </div>
-        <div class="d-flex">
-          <button
-            id="btn-transparent"
-            class="px-3 mb-2 btn bg-gradient-success w-100"
-            :class="ifTransparent === 'bg-transparent' ? 'active' : ''"
-            @click="sidebarType('bg-transparent')"
-          >
-            Transparent
-          </button>
-          <button
-            id="btn-white"
-            class="px-3 mb-2 btn bg-gradient-success w-100 ms-2"
-            :class="ifTransparent === 'bg-white' ? 'active' : ''"
-            @click="sidebarType('bg-white')"
-          >
-            White
-          </button>
-        </div>
-        <p class="mt-2 text-sm d-xl-none d-block">
-          You can change the sidenav type just on desktop view.
-        </p>
-        <!-- Navbar Fixed -->
-        <div class="mt-3">
-          <h6 class="mb-0">Navbar Fixed</h6>
-        </div>
-        <div class="form-check form-switch ps-0">
-          <input
-            class="mt-1 form-check-input"
-            :class="this.$store.state.isRTL ? 'float-end  me-auto' : ' ms-auto'"
-            type="checkbox"
-            id="navbarFixed"
-            :checked="this.$store.state.isNavFixed"
-            @change="setNavbarFixed"
-            v-model="fixedKey"
-          />
-        </div>
-        <hr class="horizontal dark my-sm-4" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapMutations, mapActions } from "vuex";
+import { mapActions } from "vuex";
 export default {
   name: "configurator",
   props: ["toggle"],
-  data() {
-    return {
-      fixedKey: "",
-    };
-  },
   methods: {
-    ...mapMutations(["navbarMinimize", "sidebarType", "navbarFixed"]),
     ...mapActions(["toggleSidebarColor"]),
 
     sidebarColor(color = "success") {
       document.querySelector("#sidenav-main").setAttribute("data-color", color);
       this.$store.state.mcolor = `card-background-mask-${color}`;
     },
-
-    sidebarType(type) {
-      this.toggleSidebarColor(type);
-    },
-
-    setNavbarFixed() {
-      if (this.$route.name !== "Profile") {
-        this.$store.state.isNavFixed = !this.$store.state.isNavFixed;
-      }
-    },
-
-    sidenavTypeOnResize() {
-      let transparent = document.querySelector("#btn-transparent");
-      let white = document.querySelector("#btn-white");
-      if (window.innerWidth < 1200) {
-        transparent.classList.add("disabled");
-        white.classList.add("disabled");
-      } else {
-        transparent.classList.remove("disabled");
-        white.classList.remove("disabled");
-      }
-    },
-  },
-  computed: {
-    ifTransparent() {
-      return this.$store.state.isTransparent;
-    },
-    sidenavResponsive() {
-      return this.sidenavTypeOnResize;
-    },
-  },
-  beforeMount() {
-    this.$store.state.isTransparent = "bg-transparent";
-    // Deactivate sidenav type buttons on resize and small screens
-    window.addEventListener("resize", this.sidenavTypeOnResize);
-    window.addEventListener("load", this.sidenavTypeOnResize);
   },
 };
 </script>

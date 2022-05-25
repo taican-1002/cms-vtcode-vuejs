@@ -24,11 +24,11 @@
                   <!-- <p class="mb-0">Enter your email and password to sign in</p> -->
                 </div>
                 <div class="card-body">
-                  <form role="form" class="text-start">
+                  <div class="text-start">
                     <label>Email</label>
                     <vsud-input
                       id="email"
-                      type="email"
+                      type="text"
                       placeholder="Email"
                       name="email"
                     />
@@ -39,32 +39,28 @@
                       placeholder="Password"
                       name="password"
                     />
-                    <vsud-switch id="rememberMe" name="rememberMe" checked>
-                      Remember me
-                    </vsud-switch>
                     <div class="text-center">
-                      <router-link :to="{ name: '/' }"
-                        ><vsud-button
-                          class="my-4 mb-2"
-                          variant="gradient"
-                          color="success"
-                          full-width
-                          >Sign in
-                        </vsud-button>
-                      </router-link>
+                      <vsud-button
+                        class="my-4 mb-2"
+                        variant="gradient"
+                        color="success"
+                        full-width
+                        @click="handleLogin()"
+                        >Sign in
+                      </vsud-button>
                     </div>
-                  </form>
+                  </div>
                 </div>
-                <div class="px-1 pt-0 text-center card-footer px-lg-2">
+                <!-- <div class="px-1 pt-0 text-center card-footer px-lg-2">
                   <p class="mx-auto mb-4 text-sm">
-                    Forgot password ?
+                    Change password ?
                     <router-link
-                      :to="{ name: 'Sign Up' }"
+                      :to="{ name: 'Change PassWord' }"
                       class="text-success text-gradient font-weight-bold"
                       >Change password</router-link
                     >
                   </p>
-                </div>
+                </div> -->
               </div>
             </div>
             <div class="col-md-6">
@@ -87,26 +83,37 @@
       </div>
     </section>
   </main>
-  <app-footer />
 </template>
 
 <script>
 // import Navbar from "@/examples/PageLayout/Navbar.vue";
-import AppFooter from "@/examples/PageLayout/Footer.vue";
 import VsudInput from "@/components/VsudInput.vue";
-import VsudSwitch from "@/components/VsudSwitch.vue";
 import VsudButton from "@/components/VsudButton.vue";
 const body = document.getElementsByTagName("body")[0];
 import { mapMutations } from "vuex";
+import { mapGetters } from "vuex";
+import { useToast } from "vue-toastification";
 
 export default {
   name: "SignIn",
+  computed: mapGetters(["users"]),
+  data() {
+    return {
+      userLogin: {
+        email: "",
+        password: "",
+        role: {},
+      },
+    };
+  },
   components: {
     // Navbar,
-    AppFooter,
     VsudInput,
-    VsudSwitch,
     VsudButton,
+  },
+  setup() {
+    const toast = useToast();
+    return { toast };
   },
   created() {
     this.toggleEveryDisplay();
@@ -120,6 +127,47 @@ export default {
   },
   methods: {
     ...mapMutations(["toggleEveryDisplay", "toggleHideConfig"]),
+    handleLogin() {
+      // const userLocal = JSON.parse(localStorage.getItem("user"));
+      const email = document.querySelector("#email");
+      const emailValue = email.value.toLowerCase();
+      const password = document.querySelector("#password");
+
+      this.users.forEach((item) => {
+        if (item.role.name == "admin") {
+          this.userLogin.email = item.email;
+          this.userLogin.password = item.password;
+          this.userLogin.role = item.role;
+        }
+      });
+      if (
+        emailValue == this.userLogin.email &&
+        password.value == this.userLogin.password
+      ) {
+        this.userLogin.email = emailValue;
+        this.userLogin.password = password.value;
+        localStorage.setItem("userLogin", JSON.stringify(this.userLogin));
+        this.users.forEach((item) => {
+          if (
+            item.email == this.userLogin.email &&
+            item.role.name == this.userLogin.role.name
+          ) {
+            item.password = this.userLogin.password;
+          }
+        });
+        this.$router.push({ name: "Dashboard" });
+        this.toast.success("Đăng nhập thành công!");
+        localStorage.setItem("user", JSON.stringify(this.users));
+      } else {
+        console.log(this.userLogin.email);
+        console.log(this.userLogin.password);
+        console.log(email.value);
+        console.log(password.value);
+        console.log(emailValue);
+
+        this.toast.error("Sai tài khoản hoặc mật khẩu");
+      }
+    },
   },
 };
 </script>

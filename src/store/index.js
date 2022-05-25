@@ -7,6 +7,7 @@ import bannerModule from "./modules/BannerModule";
 import staffModule from "./modules/StaffModule";
 import contactModule from "./modules/ContactModule";
 import partnerModule from "./modules/PartnerModule";
+import headerModule from "./modules/HeaderModule";
 import footerModule from "./modules/FooterModule";
 
 export default createStore({
@@ -18,6 +19,7 @@ export default createStore({
     staffModule,
     contactModule,
     partnerModule,
+    headerModule,
     footerModule,
   },
   state: {

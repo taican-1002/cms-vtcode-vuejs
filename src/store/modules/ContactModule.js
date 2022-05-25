@@ -6,39 +6,54 @@ const contactModule = {
       {
         id: 1,
         name: "John",
-        tel: "0123456",
+        phone: "0947512845",
         email: "abc@gmail.com",
-        topic: "Topic 1",
         description: "Description 1",
       },
       {
         id: 2,
         name: "Robert",
-        tel: "0123456",
+        phone: "0947512845",
         email: "abc@gmail.com",
-        topic: "Topic 2",
         description: "Description 2",
       },
       {
         id: 3,
         name: "Alex",
-        tel: "0123456",
+        phone: "0947512845",
         email: "abc@gmail.com",
-        topic: "Topic 3",
         description: "Description 3",
+      },
+    ],
+    contactInfos: [
+      {
+        id: 1,
+        name: "Phone",
+        content: "1900 77 99 18",
+      },
+      {
+        id: 2,
+        name: "Email",
+        content: "info@vtcode.vn",
+      },
+      {
+        id: 3,
+        name: "Address",
+        content: "234 Ngô Tất Tố, phường 22, quận Bình Thạnh, Tp. Hồ Chí Minh",
       },
     ],
   },
   getters: {
     contacts: (state) => state.contacts,
+    contactInfos: (state) => state.contactInfos,
   },
   mutations: {
-    // USER
-    ADD_STAFF(state, newContact) {
+    // CONTACT
+    ADD_CONTACT(state, newContact) {
       newContact.id = idContact++;
       state.contacts.push(newContact);
     },
-    EDIT_STAFF(state, newContact) {
+    EDIT_CONTACT(state, newContact) {
       state.contacts.map((item) => {
         if (item.id === newContact.id) {
           Object.assign(item, newContact);
@@ -46,22 +61,51 @@ const contactModule = {
         return item;
       });
     },
-    DELETE_STAFF(state, newContact) {
+    DELETE_CONTACT(state, newContact) {
       state.contacts = state.contacts.filter(
         (contact) => contact.id !== newContact.id
       );
     },
+    // CONTACT INFO
+    // ADD_CONTACT(state, newContact) {
+    //   newContact.id = idContact++;
+    //   state.contacts.push(newContact);
+    // },
+    EDIT_CONTACT_INFO(state, newContactInfo) {
+      state.contactInfos.map((item) => {
+        if (item.id === newContactInfo.id) {
+          Object.assign(item, newContactInfo);
+        }
+        return item;
+      });
+    },
+    // DELETE_CONTACT(state, newContact) {
+    //   state.contacts = state.contacts.filter(
+    //     (contact) => contact.id !== newContact.id
+    //   );
+    // },
   },
   actions: {
-    addStaff({ commit }, newContact) {
-      commit("ADD_STAFF", newContact);
+    //CONTACT
+    addContact({ commit }, newContact) {
+      commit("ADD_CONTACT", newContact);
     },
-    editStaff({ commit }, newContact) {
-      commit("EDIT_STAFF", newContact);
+    editContact({ commit }, newContact) {
+      commit("EDIT_CONTACT", newContact);
     },
-    deleteStaff({ commit }, newContact) {
-      commit("DELETE_STAFF", newContact);
+    deleteContact({ commit }, newContact) {
+      commit("DELETE_CONTACT", newContact);
     },
+    //CONTACT INFO
+    // addContact({ commit }, newContact) {
+    //   commit("ADD_CONTACT", newContact);
+    // },
+    editContactInfo({ commit }, newContactInfo) {
+      commit("EDIT_CONTACT_INFO", newContactInfo);
+    },
+    // deleteContact({ commit }, newContact) {
+    //   commit("DELETE_CONTACT", newContact);
+    // },
   },
 };
 export default contactModule;

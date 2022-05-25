@@ -7,7 +7,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Delete Staff</h5>
+              <h5 class="modal-title">Delete Contact</h5>
               <button
                 type="button"
                 class="close"
@@ -18,7 +18,7 @@
               </button>
             </div>
             <div class="modal-body">
-              <div class="mb-3">Bạn có chắc muốn xóa staff này ?</div>
+              <div class="mb-3">Bạn có chắc muốn xóa contact này ?</div>
             </div>
             <div class="modal-footer">
               <button
@@ -31,7 +31,7 @@
               <button
                 type="button"
                 class="btn btn-primary"
-                @click="handleDeleteStaff"
+                @click="handleDeleteContact"
               >
                 DELETE
               </button>
@@ -48,28 +48,28 @@ import { mapActions } from "vuex";
 import ButtonDelete from "@/examples/ButtonAction/ButtonDelete";
 
 export default {
-  name: "DeleteStaff",
+  name: "DeleteContact",
   components: { ButtonDelete },
   data() {
     return {
-      staffDelete: {
-        id: this.staff.id,
-        name: this.staff.name,
-        position: this.staff.position,
-        office: this.staff.office,
+      contactDelete: {
+        id: this.contact.id,
+        name: this.contact.name,
+        phone: this.contact.phone,
+        email: this.contact.email,
+        description: this.contact.description,
       },
       showModal: false,
     };
   },
-  props: ["staff"],
+  props: ["contact"],
   methods: {
-    ...mapActions(["deleteStaff"]),
+    ...mapActions(["deleteContact"]),
     handleDelete() {
       this.showModal = true;
     },
-    handleDeleteStaff(e) {
-      e.preventDefault();
-      this.deleteStaff(this.staffDelete);
+    handleDeleteContact() {
+      this.deleteContact(this.contactDelete);
     },
   },
 };

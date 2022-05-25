@@ -39,7 +39,9 @@
                 />
               </div>
               <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Title</label>
+                <label for="exampleInputEmail1" class="form-label"
+                  >Title <span style="color: #ff0000">*</span></label
+                >
                 <input
                   type="text"
                   class="form-control"
@@ -49,7 +51,7 @@
               </div>
               <div class="mb-3">
                 <label for="validationDefault04" class="form-label"
-                  >Category</label
+                  >Category <span style="color: #ff0000">*</span></label
                 >
                 <select
                   class="form-select form-category"
@@ -68,7 +70,7 @@
               </div>
               <div class="mb-3">
                 <label for="validationDefault04" class="form-label"
-                  >Author</label
+                  >Author <span style="color: #ff0000">*</span></label
                 >
                 <select
                   class="form-select form-author"
@@ -76,16 +78,28 @@
                   required
                 >
                   <option selected disabled value="">Select Author</option>
-                  <option value="admin">Admin</option>
+                  <option
+                    v-for="item in authors"
+                    :key="item.id"
+                    :value="item.id"
+                  >
+                    {{ item.role }}
+                  </option>
                 </select>
               </div>
-              <div class="mb-3">
+              <!-- <div class="mb-3">
                 <QuillEditor
                   v-model:content="quill"
                   contentType="html"
                   theme="snow"
                   toolbar="full"
                 />
+              </div> -->
+              <div class="mb-3">
+                <CKEditor
+                  @send-content="getContent"
+                  :content="ckeditor"
+                ></CKEditor>
               </div>
 
               <div class="mb-3">
@@ -117,30 +131,43 @@
 
 <script>
 import { mapActions } from "vuex";
-import { QuillEditor } from "@vueup/vue-quill";
-import "@vueup/vue-quill/dist/vue-quill.snow.css";
+// import { QuillEditor } from "@vueup/vue-quill";
+// import "@vueup/vue-quill/dist/vue-quill.snow.css";
 
 import noImage from "../../../assets/img/no-image.png";
 import ButtonAdd from "@/examples/ButtonAction/ButtonAdd.vue";
 import { mapGetters } from "vuex";
+import { useToast } from "vue-toastification";
+
+import CKEditor from "../CKEditor/CKEditor.vue";
+import { ref } from "@vue/reactivity";
+
 export default {
   name: "add-blog",
-  computed: mapGetters(["categories"]),
-  watch: {
-    quill() {
-      console.log(this.quill);
-    },
+  computed: mapGetters(["categories", "authors"]),
+  setup() {
+    const toast = useToast();
+    const initialData = ref("Hello");
+    // const getContent = (val) => {
+    //   console.log(val);
+    // };
+    return {
+      // getContent,
+      initialData,
+      toast,
+    };
   },
   mounted() {
-    this.quill = this.blog.description;
+    // this.quill = this.blog.description;
+    this.ckeditor = this.blog.description;
   },
   data() {
     return {
-      quill: "",
+      ckeditor: "",
       blog: {
         title: "",
         category: {},
-        author: "",
+        author: {},
         image: "",
         description: "",
         createDate: "",
@@ -149,37 +176,61 @@ export default {
       previewImage: noImage,
     };
   },
-  components: { ButtonAdd, QuillEditor },
+  components: {
+    ButtonAdd,
+    // QuillEditor,
+    CKEditor,
+  },
   methods: {
     ...mapActions(["addBlog"]),
-    onSubmit(e) {
-      e.preventDefault();
+    getContent(val) {
+      // console.log(val);  
+      this.ckeditor = val;
+    },
+    onSubmit() {
       const formSelectCategory = document.querySelector(".form-category");
       const formSelectAuthor = document.querySelector(".form-author");
       const objCategory = this.categories.filter(
         (item) => item.id == formSelectCategory.value
       );
-
-      if (this.blog.title != "" && this.blog.title.trim()) {
+      const objAuthor = this.authors.filter(
+        (item) => item.id == formSelectAuthor.value
+      );
+      // console.log(objAuthor);
+      if (
+        this.blog.title != "" &&
+        this.blog.title.trim() &&
+        formSelectCategory.value != "" &&
+        formSelectCategory.value.trim() &&
+        formSelectAuthor.value != "" &&
+        formSelectAuthor.value.trim()
+      ) {
         this.addBlog({
           id: this.blog.id,
           title: this.blog.title,
           category: objCategory[0],
-          author: formSelectAuthor.value,
-          description: this.quill,
+          author: objAuthor[0],
+          description: this.ckeditor,
           image: this.previewImage,
           createDate: this.currentDateTime(),
         });
+        console.log(this.ckeditor);
         this.showModal = false;
+        this.blog.id = "";
+        this.blog.title = "";
+        this.blog.category = {};
+        this.blog.author = {};
+        this.previewImage = noImage;
+        this.blog.createDate = "";
+        const inputFile = document.querySelector("#file-input");
+        inputFile.value = "";
+        this.ckeditor = "";
+        formSelectCategory.value = "";
+        formSelectAuthor.value = "";
         // console.log(this.blog.description);
+      } else {
+        this.toast.error("Vui lòng điền đầy đủ thông tin!");
       }
-
-      this.blog.id = "";
-      this.blog.title = "";
-      this.blog.category = "";
-      this.blog.author = "";
-      this.blog.image = "";
-      this.blog.createDate = "";
     },
 
     handleToggleModal() {
@@ -266,7 +317,9 @@ export default {
   height: 20rem;
   display: flex;
   margin: auto;
+  object-fit: contain;
 }
+
 @media only screen and (max-width: 600px) {
   .add-blog__img {
     width: 14rem;

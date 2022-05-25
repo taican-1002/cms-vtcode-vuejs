@@ -1,72 +1,103 @@
+var idFooter = 5;
+var idFooterFollow = 5;
 const footerModule = {
   state: {
     itemFooter: [
       {
         id: 1,
-        name: "Địa chỉ",
+        name: "Dịch vụ",
         description: [
           {
-            icon: ["phone"],
-            text: "234 Ngô Tất Tố, phường 22, quận Bình Thạnh, Tp. Hồ Chí Minh",
+            text: "Giá thành",
           },
           {
-            icon: ["phone"],
-            text: "1900 77 99 18",
+            text: "Dịch vụ",
           },
           {
-            icon: ["phone"],
-            text: "info@vtcode.vn",
+            text: "Chúng tôi",
           },
           {
-            icon: [
-              "phone",
-              "bone",
-              "book-open",
-              "champagne-glasses",
-              "certificate",
-            ],
+            text: "Định hướng",
           },
         ],
       },
       {
         id: 2,
-        name: "Sản phẩm",
+        name: "Chính sách",
         description: [
           {
-            text: "Thi công hệ thống mạng công ty Tân Hùng Thái",
+            text: "Chính sách",
           },
           {
-            text: "Thi công Datacenter Karaoke ICOOL",
+            text: "Hỗ trợ",
           },
           {
-            text: "Booth Karaoke",
+            text: "Bảo mật",
           },
         ],
       },
       {
         id: 3,
-        name: "Dịch vụ",
+        name: "Nhân lực",
         description: [
           {
-            text: "Xây dựng và thiết kế Website",
-          },
-
-          {
-            text: "Phát triển ứng dụng di động",
+            text: "Lập trình viên",
           },
           {
-            text: "Hosting, VPS, tên miền",
+            text: "Thiết kế",
           },
         ],
+      },
+      {
+        id: 4,
+        name: "Blog",
+        description: [
+          {
+            text: "CEO",
+          },
+          {
+            text: "Cuộc sống",
+          },
+          {
+            text: "Điều khoản",
+          },
+          {
+            text: "Công nghệ",
+          },
+        ],
+      },
+    ],
+    followFooter: [
+      {
+        id: 1,
+        name: "Facebook",
+        icon: ["fab", "facebook"],
+      },
+      {
+        id: 2,
+        name: "Twitter",
+        icon: ["fab", "twitter"],
+      },
+      {
+        id: 3,
+        name: "Instagram",
+        icon: ["fab", "instagram"],
+      },
+      {
+        id: 4,
+        name: "Youtube",
+        icon: ["fab", "youtube"],
       },
     ],
   },
   getters: {
     itemFooter: (state) => state.itemFooter,
+    followFooter: (state) => state.followFooter,
   },
   mutations: {
     // FOOTER
     ADD_FOOTER(state, newItemFooter) {
+      newItemFooter.id = idFooter++;
       state.itemFooter.push(newItemFooter);
     },
     EDIT_FOOTER(state, newItemFooter) {
@@ -82,6 +113,24 @@ const footerModule = {
         (footerItem) => footerItem.id !== newItemFooter.id
       );
     },
+    // FOOTER FOLLOW
+    ADD_FOOTER_FOLLOW(state, newFooterFollow) {
+      newFooterFollow.id = idFooterFollow++;
+      state.followFooter.push(newFooterFollow);
+    },
+    EDIT_FOOTER_FOLLOW(state, newFooterFollow) {
+      state.followFooter.map((item) => {
+        if (item.id === newFooterFollow.id) {
+          Object.assign(item, newFooterFollow);
+        }
+        return item;
+      });
+    },
+    DELETE_FOOTER_FOLLOW(state, newFooterFollow) {
+      state.followFooter = state.followFooter.filter(
+        (footerFollow) => footerFollow.id !== newFooterFollow.id
+      );
+    },
   },
   actions: {
     // FOOTER
@@ -93,6 +142,16 @@ const footerModule = {
     },
     deleteFooter({ commit }, newItemFooter) {
       commit("DELETE_FOOTER", newItemFooter);
+    },
+    // FOOTER FOLLOW
+    addFooterFollow({ commit }, newFooterFollow) {
+      commit("ADD_FOOTER_FOLLOW", newFooterFollow);
+    },
+    editFooterFollow({ commit }, newFooterFollow) {
+      commit("EDIT_FOOTER_FOLLOW", newFooterFollow);
+    },
+    deleteFooterFollow({ commit }, newFooterFollow) {
+      commit("DELETE_FOOTER_FOLLOW", newFooterFollow);
     },
   },
 };

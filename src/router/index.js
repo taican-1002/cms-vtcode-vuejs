@@ -3,15 +3,15 @@ import Banner from "@/views/Banner.vue";
 import Dashboard from "@/views/Dashboard.vue";
 import User from "@/views/User.vue";
 import Footer from "@/views/Footer.vue";
-import Profile from "@/views/Profile.vue";
+import Header from "@/views/Header.vue";
 import SignIn from "@/views/SignIn.vue";
-import SignUp from "@/views/SignUp.vue";
+import ChangePassWord from "@/views/ChangePassWord.vue";
 
 const routes = [
   {
     path: "/",
     name: "/",
-    redirect: "/dashboard",
+    redirect: "/sign-in",
   },
   {
     path: "/dashboard",
@@ -36,9 +36,9 @@ const routes = [
   },
 
   {
-    path: "/profile",
-    name: "Profile",
-    component: Profile,
+    path: "/header",
+    name: "Header",
+    component: Header,
   },
 
   {
@@ -47,9 +47,9 @@ const routes = [
     component: SignIn,
   },
   {
-    path: "/sign-up",
-    name: "Sign Up",
-    component: SignUp,
+    path: "/change-password",
+    name: "Change PassWord",
+    component: ChangePassWord,
   },
 ];
 

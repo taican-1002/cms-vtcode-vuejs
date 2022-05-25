@@ -5,6 +5,8 @@ import galaxy from "../../assets/img/partner/galaxy-logo-mobile.png";
 import heineken from "../../assets/img/partner/heineken-14-logo.png";
 import vtco from "../../assets/img/partner/vtco.png";
 
+var idPartner = 7;
+
 const partnerModule = {
   state: {
     partners: [
@@ -46,6 +48,7 @@ const partnerModule = {
   mutations: {
     // USER
     ADD_PARTNER(state, newPartner) {
+      newPartner.id = idPartner++;
       state.partners.push(newPartner);
     },
     EDIT_PARTNER(state, newPartner) {

@@ -9,13 +9,18 @@
         <table class="table align-items-center justify-content-center mb-0">
           <thead>
             <tr>
-              <th v-for="item in thTable" :key="item" :class="item.class">
+              <th
+                v-for="item in thTable"
+                :key="item"
+                :class="item.class"
+                @click="sort(item.name)"
+              >
                 {{ item.name }}
               </th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in partners" :key="item.id">
+            <tr v-for="item in sortedPartner" :key="item.id">
               <td class="table-id">
                 {{ item.id }}
               </td>
@@ -46,7 +51,32 @@ export default {
   name: "partner-dashboard",
 
   components: { AddPartner, EditPartner, DeletePartner },
-  computed: mapGetters(["partners"]),
+  computed: {
+    ...mapGetters(["partners"]),
+    sortedPartner() {
+      return this.sortedPartner2();
+    },
+  },
+  methods: {
+    //Sort Partner
+    sort: function (s) {
+      //  if s == current sort, reverse
+      if (s === this.currentSort) {
+        this.currentSortDir = this.currentSortDir === "asc" ? "desc" : "asc";
+      }
+      this.currentSort = s;
+    },
+    //Sort Partner
+    sortedPartner2() {
+      return this.partners.sort((a, b) => {
+        let modifier = 1;
+        if (this.currentSortDir === "desc") modifier = -1;
+        if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
+        if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+        return 0;
+      });
+    },
+  },
   data() {
     return {
       thTable: [
@@ -71,6 +101,9 @@ export default {
           name: "action",
         },
       ],
+      //Sort Partner
+      currentSort: "id",
+      currentSortDir: "asc",
     };
   },
 };

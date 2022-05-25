@@ -7,12 +7,12 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Edit Staff</h5>
+              <h5 class="modal-title">Edit Partner</h5>
               <button
                 type="button"
                 class="close"
                 aria-label="Close"
-                @click="showModal = false"
+                @click="handleCloseEdit"
               >
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -25,6 +25,17 @@
                   class="form-control"
                   v-model="partnerEdit.id"
                   disabled
+                />
+              </div>
+              <div class="mb-3 text-left">
+                <label class="form-label"
+                  >Name <span style="color: #ff0000">*</span></label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="partnerEdit.name"
+                  required
                 />
               </div>
               <div class="mb-3 text-left">
@@ -45,22 +56,13 @@
                   id="file-input"
                 />
               </div>
-              <div class="mb-3 text-left">
-                <label class="form-label">Name</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="partnerEdit.name"
-                  required
-                />
-              </div>
             </div>
 
             <div class="modal-footer">
               <button
                 type="button"
                 class="btn btn-secondary"
-                @click="showModal = false"
+                @click="handleCloseEdit"
               >
                 Close
               </button>
@@ -82,10 +84,15 @@
 <script>
 import { mapActions } from "vuex";
 import ButtonEdit from "@/examples/ButtonAction/ButtonEdit.vue";
+import { useToast } from "vue-toastification";
 
 export default {
   name: "edit-partner",
   components: { ButtonEdit },
+  setup() {
+    const toast = useToast();
+    return { toast };
+  },
   data() {
     return {
       partnerEdit: {
@@ -104,11 +111,19 @@ export default {
     handleEdit() {
       this.showModal = true;
     },
-    handleSaveEdit(e) {
-      e.preventDefault();
-      this.partnerEdit.logo = this.previewImage;
-      this.editPartner(this.partnerEdit);
+    handleCloseEdit() {
       this.showModal = false;
+      this.partnerEdit.name = this.partner.name;
+      this.previewImage = this.partner.logo;
+    },
+    handleSaveEdit() {
+      if (this.partnerEdit.name != "" && this.partnerEdit.name.trim()) {
+        this.partnerEdit.logo = this.previewImage;
+        this.editPartner(this.partnerEdit);
+        this.showModal = false;
+      } else {
+        this.toast.error("Vui lòng điền tên!");
+      }
     },
     /**Handle upload logo */
     uploadImage(e) {

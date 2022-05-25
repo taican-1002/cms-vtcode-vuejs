@@ -1,7 +1,7 @@
 <template>
   <div class="card mb-4">
     <div class="card-header pb-0 table-header">
-      <h1>Staffs</h1>
+      <h1>Staff</h1>
       <AddStaff />
     </div>
     <div class="card-body px-0 pt-0 pb-2">
@@ -9,13 +9,18 @@
         <table class="table align-items-center justify-content-center mb-0">
           <thead>
             <tr>
-              <th v-for="item in thTable" :key="item" :class="item.class">
+              <th
+                v-for="item in thTable"
+                :key="item"
+                :class="item.class"
+                @click="sort(item.name)"
+              >
                 {{ item.name }}
               </th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in staffs" :key="item.id">
+            <tr v-for="item in sortedStaff" :key="item.id">
               <td class="table-id">
                 {{ item.id }}
               </td>
@@ -47,7 +52,32 @@ export default {
   name: "staff-dashboard",
 
   components: { AddStaff, EditStaff, DeleteStaff },
-  computed: mapGetters(["staffs"]),
+  computed: {
+    ...mapGetters(["staffs"]),
+    sortedStaff() {
+      return this.sortedStaff2();
+    },
+  },
+  methods: {
+    //Sort Staff
+    sort: function (s) {
+      //  if s == current sort, reverse
+      if (s === this.currentSort) {
+        this.currentSortDir = this.currentSortDir === "asc" ? "desc" : "asc";
+      }
+      this.currentSort = s;
+    },
+    //Sort Staff
+    sortedStaff2() {
+      return this.staffs.sort((a, b) => {
+        let modifier = 1;
+        if (this.currentSortDir === "desc") modifier = -1;
+        if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
+        if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+        return 0;
+      });
+    },
+  },
   data() {
     return {
       thTable: [
@@ -82,6 +112,9 @@ export default {
           name: "action",
         },
       ],
+      //Sort Staff
+      currentSort: "id",
+      currentSortDir: "asc",
     };
   },
 };
@@ -107,5 +140,6 @@ export default {
   width: 50px;
   height: 50px;
   border-radius: 100%;
+  object-fit: contain;
 }
 </style>

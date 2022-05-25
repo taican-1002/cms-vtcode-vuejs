@@ -1,4 +1,5 @@
 <template>
+  <!-- FOOTER -->
   <div class="card mb-4 position-relative">
     <div class="card-header pb-0 table-header">
       <h1>Footer</h1>
@@ -10,29 +11,17 @@
           <thead>
             <tr>
               <th
-                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                v-for="item in footerTable"
+                :key="item"
+                :class="item.class"
+                @click="sortFooter(item.name)"
               >
-                ID
-              </th>
-              <th
-                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-              >
-                Name
-              </th>
-              <th
-                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-              >
-                Description
-              </th>
-              <th
-                class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2"
-              >
-                Action
+                {{ item.name }}
               </th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in itemFooter" :key="item.id">
+            <tr v-for="item in sortedFooter" :key="item.id">
               <td class="table-id">
                 {{ item.id }}
               </td>
@@ -43,20 +32,11 @@
                   :key="index"
                   class="footer-des"
                 >
-                  <li v-if="itemDes.icon && itemDes.icon != []">
-                    Icon:
-                    <font-awesome-icon
-                      v-for="(iconFooter, index) in itemDes.icon"
-                      :key="index"
-                      :icon="iconFooter"
-                      class="footer-icon"
-                    />
-                  </li>
                   <li
-                    v-if="itemDes.text && itemDes.text.trim() != ''"
+                    v-if="itemDes.text != '' && itemDes.text.trim()"
                     class="footer-des__text"
                   >
-                    Content : {{ itemDes.text }}
+                    {{ itemDes.text }}
                   </li>
                 </ul>
               </td>
@@ -70,19 +50,170 @@
       </div>
     </div>
   </div>
+  <!-- FOOTER FOLLOW -->
+  <div class="card mb-4 position-relative">
+    <div class="card-header pb-0 table-header">
+      <h1>Footer Follow</h1>
+      <AddFooterFollow />
+    </div>
+    <div class="card-body px-0 pt-0 pb-2">
+      <div class="table-responsive p-0">
+        <table class="table align-items-center justify-content-center mb-0">
+          <thead>
+            <tr>
+              <th
+                v-for="item in footerFollowTable"
+                :key="item"
+                :class="item.class"
+                @click="sortFollow(item.name)"
+              >
+                {{ item.name }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in sortedFollow" :key="item.id">
+              <td class="table-id">
+                {{ item.id }}
+              </td>
+              <td>{{ item.name }}</td>
+              <td><font-awesome-icon :icon="item.icon" /></td>
+              <td class="footer-action">
+                <EditFooterFollow :footerFollow="item" />
+                <DeleteFooterFollow :footerFollow="item" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import AddFooter from "./AddFooter.vue";
+import AddFooterFollow from "./AddFooterFollow.vue";
 import EditFooter from "./EditFooter.vue";
+import EditFooterFollow from "./EditFooterFollow.vue";
+import DeleteFooterFollow from "./DeleteFooterFollow.vue";
 import DeleteFooter from "./DeleteFooter.vue";
 
 import { mapGetters } from "vuex";
 
 export default {
   name: "footer-main",
-  components: { AddFooter, EditFooter, DeleteFooter },
-  computed: mapGetters(["itemFooter"]),
+  components: {
+    AddFooter,
+    AddFooterFollow,
+    EditFooter,
+    EditFooterFollow,
+    DeleteFooter,
+    DeleteFooterFollow,
+  },
+  computed: {
+    ...mapGetters(["itemFooter", "followFooter", "EditFooterFollow"]),
+    sortedFooter() {
+      return this.sortedFooter2();
+    },
+    sortedFollow() {
+      return this.sortedFollow2();
+    },
+  },
+  data() {
+    return {
+      footerTable: [
+        {
+          class:
+            "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7",
+          name: "id",
+        },
+        {
+          class:
+            "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2",
+          name: "name",
+        },
+        {
+          class:
+            "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2",
+          name: "description",
+        },
+        {
+          class:
+            "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center",
+          name: "action",
+        },
+      ],
+      footerFollowTable: [
+        {
+          class:
+            "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7",
+          name: "id",
+        },
+        {
+          class:
+            "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2",
+          name: "name",
+        },
+        {
+          class:
+            "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2",
+          name: "icon",
+        },
+        {
+          class:
+            "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center",
+          name: "action",
+        },
+      ],
+      //Sort Footer
+      currentSort: "id",
+      currentSortDir: "asc",
+      //Sort Follow
+      currentSortFollow: "id",
+      currentSortDirFollow: "asc",
+    };
+  },
+  methods: {
+    //Sort Footer
+    sortFooter: function (s) {
+      //  if s == current sort, reverse
+      if (s === this.currentSort) {
+        this.currentSortDir = this.currentSortDir === "asc" ? "desc" : "asc";
+      }
+      this.currentSort = s;
+    },
+    //Sort Follow
+    sortFollow: function (s) {
+      //  if s == current sort, reverse
+      if (s === this.currentSortFollow) {
+        this.currentSortDirFollow =
+          this.currentSortDirFollow === "asc" ? "desc" : "asc";
+      }
+      this.currentSortFollow = s;
+    },
+    //Sort Footer
+    sortedFooter2() {
+      return this.itemFooter.sort((a, b) => {
+        let modifier = 1;
+        if (this.currentSortDir === "desc") modifier = -1;
+        if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
+        if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+        return 0;
+      });
+    },
+    //Sort Follow
+    sortedFollow2() {
+      return this.followFooter.sort((a, b) => {
+        let modifier = 1;
+        if (this.currentSortDirFollow === "desc") modifier = -1;
+        if (a[this.currentSortFollow] < b[this.currentSortFollow])
+          return -1 * modifier;
+        if (a[this.currentSortFollow] > b[this.currentSortFollow])
+          return 1 * modifier;
+        return 0;
+      });
+    },
+  },
 };
 </script>
 <style scoped>
@@ -113,9 +244,7 @@ li {
 .footer-action {
   text-align: center;
 }
-.footer-icon {
-  margin-right: 0.5rem;
-}
+
 .footer-des {
   white-space: nowrap;
   width: 35rem;

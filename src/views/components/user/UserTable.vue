@@ -1,7 +1,7 @@
 <template>
   <div class="card mb-4">
     <div class="card-header pb-0 table-header">
-      <h1>Users</h1>
+      <h1>User</h1>
       <AddUser />
     </div>
     <div class="card-body px-0 pt-0 pb-2">
@@ -10,34 +10,17 @@
           <thead>
             <tr>
               <th
-                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                v-for="item in userTable"
+                :key="item"
+                :class="item.class"
+                @click="sort(item.name)"
               >
-                ID
-              </th>
-              <th
-                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-              >
-                Email
-              </th>
-              <th
-                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-              >
-                Password
-              </th>
-              <th
-                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-              >
-                Role
-              </th>
-              <th
-                class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2"
-              >
-                Action
+                {{ item.name }}
               </th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in users" :key="item.id">
+            <tr v-for="item in sortedUser" :key="item.id">
               <td class="table-id">
                 {{ item.id }}
               </td>
@@ -66,7 +49,70 @@ export default {
   name: "user-table",
 
   components: { AddUser, EditUser, DeleteUser },
-  computed: mapGetters(["users"]),
+  computed: {
+    ...mapGetters(["users"]),
+    sortedUser() {
+      return this.sortedUser2();
+    },
+  },
+  data() {
+    return {
+      userTable: [
+        {
+          class:
+            "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7",
+          name: "id",
+        },
+        {
+          class:
+            "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2",
+          name: "email",
+        },
+        {
+          class:
+            "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2",
+          name: "password",
+        },
+        {
+          class:
+            "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2",
+          name: "role",
+        },
+        {
+          class:
+            "text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2",
+          name: "action",
+        },
+      ],
+      //Sort User
+      currentSort: "id",
+      currentSortDir: "asc",
+    };
+  },
+  // mounted() {
+  //   const userLocal = JSON.parse(localStorage.getItem("user"));
+  //   this.userRe = userLocal;
+  // },
+  methods: {
+    //Sort User
+    sort: function (s) {
+      //  if s == current sort, reverse
+      if (s === this.currentSort) {
+        this.currentSortDir = this.currentSortDir === "asc" ? "desc" : "asc";
+      }
+      this.currentSort = s;
+    },
+    //Sort User
+    sortedUser2() {
+      return this.users.sort((a, b) => {
+        let modifier = 1;
+        if (this.currentSortDir === "desc") modifier = -1;
+        if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
+        if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+        return 0;
+      });
+    },
+  },
 };
 </script>
 <style scoped>

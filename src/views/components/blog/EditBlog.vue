@@ -12,7 +12,7 @@
                 type="button"
                 class="close"
                 aria-label="Close"
-                @click="showModal = false"
+                @click="handleCloseEdit"
               >
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -46,7 +46,9 @@
                 />
               </div>
               <div class="mb-3 text-left">
-                <label class="form-label">Title</label>
+                <label class="form-label"
+                  >Title <span style="color: #ff0000">*</span></label
+                >
                 <input
                   type="text"
                   class="form-control"
@@ -56,7 +58,9 @@
               </div>
 
               <div class="mb-3 text-left">
-                <label class="form-label">Category</label>
+                <label class="form-label"
+                  >Category <span style="color: #ff0000">*</span></label
+                >
                 <select
                   class="form-select form-category"
                   id="validationDefault04"
@@ -76,7 +80,7 @@
               </div>
               <div class="mb-3 text-left">
                 <label for="validationDefault04" class="form-label"
-                  >Author</label
+                  >Author <span style="color: #ff0000">*</span></label
                 >
                 <select
                   class="form-select form-author"
@@ -84,16 +88,27 @@
                   required
                 >
                   <option selected disabled value="">Select Author</option>
-                  <option value="Admin">Admin</option>
+                  <option
+                    v-for="item in authors"
+                    class="select-option"
+                    :key="item.id"
+                    :value="item.id"
+                    :selected="item.id === blogEdit.author.id"
+                  >
+                    {{ item.role }}
+                  </option>
                 </select>
               </div>
-              <div class="mb-3">
+              <!-- <div class="mb-3">
                 <QuillEditor
                   v-model:content="blogEdit.description"
                   contentType="html"
                   theme="snow"
                   toolbar="full"
                 />
+              </div> -->
+              <div class="mb-3">
+                <CKEditor :content="blogEdit.description"></CKEditor>
               </div>
               <div class="mb-3 text-left">
                 <label class="form-label">Create Date</label>
@@ -111,7 +126,7 @@
               <button
                 type="button"
                 class="btn btn-secondary"
-                @click="showModal = false"
+                @click="handleCloseEdit"
               >
                 Close
               </button>
@@ -134,15 +149,19 @@
 import { mapActions } from "vuex";
 import ButtonEdit from "@/examples/ButtonAction/ButtonEdit.vue";
 import { mapGetters } from "vuex";
-import { QuillEditor } from "@vueup/vue-quill";
-import "@vueup/vue-quill/dist/vue-quill.snow.css";
+// import { QuillEditor } from "@vueup/vue-quill";
+// import "@vueup/vue-quill/dist/vue-quill.snow.css";
+import { useToast } from "vue-toastification";
+import CKEditor from "../CKEditor/CKEditor.vue";
 
 export default {
   name: "edit-staff",
-  components: { QuillEditor, ButtonEdit },
-  computed: mapGetters(["categories"]),
-  mounted() {
-    console.log(this.blogEdit.description);
+  components: { ButtonEdit, CKEditor },
+  computed: mapGetters(["categories", "authors"]),
+  setup() {
+    const toast = useToast();
+
+    return { toast };
   },
   data() {
     return {
@@ -165,17 +184,30 @@ export default {
     handleEdit() {
       this.showModal = true;
     },
-    handleSaveEdit(e) {
-      e.preventDefault();
+    handleCloseEdit() {
+      this.showModal = false;
+      this.blogEdit.title = this.blog.title;
+      this.blogEdit.description = this.blog.description;
+      this.previewImage = this.blog.image;
+    },
+    handleSaveEdit() {
       const formCategory = document.querySelector(".form-category");
+      const formAuthor = document.querySelector(".form-author");
       const objCategory = this.categories.filter(
         (item) => item.id == formCategory.value
       );
-
-      this.blogEdit.category = objCategory[0];
-      this.blogEdit.image = this.previewImage;
-      this.editBlogAction(this.blogEdit);
-      this.showModal = false;
+      const objAuthor = this.authors.filter(
+        (item) => item.id == formAuthor.value
+      );
+      if (this.blogEdit.title != "" && this.blogEdit.title.trim()) {
+        this.blogEdit.author = objAuthor[0];
+        this.blogEdit.category = objCategory[0];
+        this.blogEdit.image = this.previewImage;
+        this.editBlogAction(this.blogEdit);
+        this.showModal = false;
+      } else {
+        this.toast.error("Vui lòng điền đầy đủ thông tin!");
+      }
     },
     /**Handle upload avatar */
     uploadImage(e) {

@@ -12,7 +12,7 @@
                 type="button"
                 class="close"
                 aria-label="Close"
-                @click="showModal = false"
+                @click="handleCloseEdit"
               >
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -46,7 +46,9 @@
                 />
               </div>
               <div class="mb-3 text-left">
-                <label class="form-label">Slogan</label>
+                <label class="form-label"
+                  >Slogan <span style="color: #ff0000">*</span></label
+                >
                 <input
                   type="text"
                   class="form-control"
@@ -55,7 +57,9 @@
                 />
               </div>
               <div class="mb-3 text-left">
-                <label class="form-label">Description</label>
+                <label class="form-label"
+                  >Description <span style="color: #ff0000">*</span></label
+                >
                 <input
                   type="text"
                   class="form-control"
@@ -69,7 +73,7 @@
               <button
                 type="button"
                 class="btn btn-secondary"
-                @click="showModal = false"
+                @click="handleCloseEdit"
               >
                 Close
               </button>
@@ -91,11 +95,25 @@
 <script>
 import { mapActions } from "vuex";
 import ButtonEdit from "@/examples/ButtonAction/ButtonEdit.vue";
+import { useToast } from "vue-toastification";
 
 export default {
   name: "edit-staff",
   components: { ButtonEdit },
+  setup() {
+    // Get toast interface
+    const toast = useToast();
 
+    // // Use it!
+    // toast("I'm a toast!");
+
+    // // or with options
+    // toast.success("My toast content", {
+    //   timeout: 2000,
+    // });
+
+    return { toast };
+  },
   data() {
     return {
       bannerEdit: {
@@ -114,12 +132,27 @@ export default {
     handleEdit() {
       this.showModal = true;
     },
+    handleCloseEdit() {
+      this.showModal = false;
+      this.bannerEdit.slogan = this.banner.slogan;
+      this.bannerEdit.description = this.banner.description;
+      this.bannerEdit.image = this.banner.image;
+      this.previewImage = this.banner.image;
+    },
     handleSaveEdit(e) {
       e.preventDefault();
-
-      this.blogEdit.image = this.previewImage;
-      this.editBlogAction(this.blogEdit);
-      this.showModal = false;
+      if (
+        this.bannerEdit.slogan != "" &&
+        this.bannerEdit.slogan.trim() &&
+        this.bannerEdit.description != "" &&
+        this.bannerEdit.description.trim()
+      ) {
+        this.bannerEdit.image = this.previewImage;
+        this.editBanner(this.bannerEdit);
+        this.showModal = false;
+      } else {
+        this.toast.error("Vui lòng điền đầy đủ thông tin!");
+      }
     },
     /**Handle upload avatar */
     uploadImage(e) {

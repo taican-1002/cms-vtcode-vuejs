@@ -28,7 +28,9 @@
                 />
               </div> -->
               <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Name</label>
+                <label for="exampleInputEmail1" class="form-label"
+                  >Name <span style="color: #ff0000">*</span></label
+                >
                 <input
                   type="text"
                   class="form-control"
@@ -71,6 +73,7 @@
 <script>
 import { mapActions } from "vuex";
 import ButtonAdd from "@/examples/ButtonAction/ButtonAdd.vue";
+import { useToast } from "vue-toastification";
 
 export default {
   name: "AddUser",
@@ -84,8 +87,13 @@ export default {
       showModal: false,
     };
   },
+  setup() {
+    const toast = useToast();
+    return { toast };
+  },
   methods: {
     ...mapActions(["addCategory"]),
+
     ToSeoUrl(str) {
       // make the url lowercase
       // var encodedUrl = url.toLowerCase();
@@ -108,21 +116,20 @@ export default {
       str = str.replace(/\s/g, "-");
       this.category.seo = str;
     },
-    onSubmit(e) {
-      e.preventDefault();
+    onSubmit() {
       if (this.category.name != "" && this.category.name.trim()) {
         this.addCategory({
           id: this.category.id,
           name: this.category.name,
           seo: this.category.seo,
         });
-
         this.showModal = false;
+        this.category.id = "";
+        this.category.name = "";
+        this.category.seo = "";
+      } else {
+        this.toast.error("Vui lòng điền đẩy đủ thông tin!");
       }
-
-      this.category.id = "";
-      this.category.name = "";
-      this.category.seo = "";
     },
     handleToggleModal() {
       this.showModal = true;
