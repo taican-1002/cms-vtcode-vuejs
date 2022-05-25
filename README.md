@@ -1,3 +1,8 @@
+### Account Admin
+- Username: admin@gmail.com
+- Password: Admin@123
+
+
 ### What's included
 
 Within the download you'll find the following directories and files:
