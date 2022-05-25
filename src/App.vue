@@ -32,9 +32,9 @@
   </main>
 </template>
 <script>
-import Sidenav from "./examples/Sidenav";
+import Sidenav from "./views/layout/main/Sidenav";
 import Configurator from "@/examples/Configurator.vue";
-import Navbar from "@/examples/Navbars/Navbar.vue";
+import Navbar from "./views/layout/main/Navbars/Navbar.vue";
 // import AppFooter from "@/examples/Footer.vue";
 import { mapMutations } from "vuex";
 export default {
@@ -74,15 +74,15 @@ th {
 th {
   cursor: pointer;
 }
-.g-sidenav-show:not(.rtl) .sidenav {
+/* .g-sidenav-show:not(.rtl) .sidenav {
   transform: translateX(-15rem);
 }
 .g-sidenav-show.g-sidenav-pinned .sidenav {
   transform: translateX(0);
-}
-.sidenav.fixed-start ~ .main-content {
+} */
+/* .sidenav.fixed-start ~ .main-content {
   margin-left: 0 !important;
-}
+} */
 button {
   border: none;
 }
@@ -96,14 +96,14 @@ button {
 .dropdown .dropdown-menu.dropdown-menu-end:before {
   right: 40px !important;
 }
-@media only screen and (max-width: 1199.98px) {
+/* @media only screen and (max-width: 1199.98px) {
   .g-sidenav-show:not(.rtl) .sidenav {
     transform: translateX(-15rem) !important;
   }
   .g-sidenav-show.g-sidenav-pinned .sidenav {
     transform: translateX(0) !important;
   }
-}
+} */
 @media only screen and (max-width: 600px) {
   .configurator {
     display: none !important;

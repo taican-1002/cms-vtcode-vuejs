@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Banner from "@/views/Banner.vue";
-import Dashboard from "@/views/Dashboard.vue";
-import User from "@/views/User.vue";
-import Footer from "@/views/Footer.vue";
-import Header from "@/views/Header.vue";
-import SignIn from "@/views/SignIn.vue";
-import ChangePassWord from "@/views/ChangePassWord.vue";
+import Banner from "@/views/components/pages/Banner.vue";
+import Dashboard from "@/views/components/pages/Dashboard.vue";
+import User from "@/views/components/pages/User.vue";
+import Footer from "@/views/components/pages/Footer.vue";
+import Header from "@/views/components/pages/Header.vue";
+import SignIn from "@/views/components/pages/SignIn.vue";
+import ChangePassWord from "@/views/components/pages/ChangePassWord.vue";
 
 const routes = [
   {
