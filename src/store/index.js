@@ -51,19 +51,7 @@ export default createStore({
       const sidenav_show = document.querySelector(".g-sidenav-show");
       const overlay_show = document.querySelector(".nav-item__overlay");
       overlay_show.classList.toggle("active");
-      // sidenav_show.classList.remove("g-sidenav-hidden");
       sidenav_show.classList.toggle("g-sidenav-pinned");
-      // if (sidenav_show.classList.contains("g-sidenav-hidden")) {
-      //   overlay_show.classList.add("active");
-      //   sidenav_show.classList.remove("g-sidenav-hidden");
-      //   sidenav_show.classList.add("g-sidenav-pinned");
-      //   state.isPinned = true;
-      // } else {
-      //   overlay_show.classList.remove("active");
-      //   sidenav_show.classList.add("g-sidenav-hidden");
-      //   sidenav_show.classList.remove("g-sidenav-pinned");
-      //   state.isPinned = false;
-      // }
     },
     sidebarType(state, payload) {
       state.isWhite = payload;
