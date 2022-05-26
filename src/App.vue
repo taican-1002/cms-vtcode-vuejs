@@ -33,7 +33,7 @@
 </template>
 <script>
 import Sidenav from "./views/layout/main/Sidenav";
-import Configurator from "@/examples/Configurator.vue";
+import Configurator from "./views/components/pages/Configurator.vue";
 import Navbar from "./views/layout/main/Navbars/Navbar.vue";
 // import AppFooter from "@/examples/Footer.vue";
 import { mapMutations } from "vuex";

@@ -37,7 +37,7 @@
 
 <script>
 import { mapActions } from "vuex";
-import ButtonDelete from "@/examples/ButtonAction/ButtonDelete";
+import ButtonDelete from "@//views/components/common/ButtonAction/ButtonDelete";
 import ModalSmall from "../../../../components/common/ModalSmall.vue";
 export default {
   name: "DeleteCategory",

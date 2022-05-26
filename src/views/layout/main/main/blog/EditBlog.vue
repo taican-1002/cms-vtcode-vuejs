@@ -122,7 +122,7 @@
 
 <script>
 import { mapActions } from "vuex";
-import ButtonEdit from "@/examples/ButtonAction/ButtonEdit.vue";
+import ButtonEdit from "@//views/components/common/ButtonAction/ButtonEdit.vue";
 import { mapGetters } from "vuex";
 // import { QuillEditor } from "@vueup/vue-quill";
 // import "@vueup/vue-quill/dist/vue-quill.snow.css";

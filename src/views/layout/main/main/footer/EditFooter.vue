@@ -181,9 +181,9 @@
 
 <script>
 import { mapActions } from "vuex";
-import ButtonEdit from "@/examples/ButtonAction/ButtonEdit.vue";
-import ButtonDelete from "@/examples/ButtonAction/ButtonDelete.vue";
-import ButtonAdd from "@/examples/ButtonAction/ButtonAdd.vue";
+import ButtonEdit from "@//views/components/common/ButtonAction/ButtonEdit.vue";
+import ButtonDelete from "@//views/components/common/ButtonAction/ButtonDelete.vue";
+import ButtonAdd from "@//views/components/common/ButtonAction/ButtonAdd.vue";
 import { useToast } from "vue-toastification";
 import Modal from "../../../../components/common/Modal.vue";
 import ModalSmall from "../../../../components/common/ModalSmall.vue";

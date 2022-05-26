@@ -98,7 +98,7 @@
 import { mapActions } from "vuex";
 
 import noImage from "../../../../../assets/img/no-image.png";
-import ButtonAdd from "@/examples/ButtonAction/ButtonAdd.vue";
+import ButtonAdd from "@//views/components/common/ButtonAction/ButtonAdd.vue";
 import { mapGetters } from "vuex";
 import { useToast } from "vue-toastification";
 

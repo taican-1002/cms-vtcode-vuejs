@@ -72,7 +72,7 @@
 
 <script>
 import { mapActions } from "vuex";
-import ButtonEdit from "@/examples/ButtonAction/ButtonEdit.vue";
+import ButtonEdit from "@//views/components/common/ButtonAction/ButtonEdit.vue";
 
 import { useToast } from "vue-toastification";
 import Modal from "../../../../components/common/Modal.vue";

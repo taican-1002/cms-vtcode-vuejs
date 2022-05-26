@@ -59,7 +59,7 @@
 
 <script>
 import { mapActions } from "vuex";
-import ButtonAdd from "@/examples/ButtonAction/ButtonAdd.vue";
+import ButtonAdd from "@//views/components/common/ButtonAction/ButtonAdd.vue";
 import noImage from "../../../../../assets/img/no-image.png";
 import { useToast } from "vue-toastification";
 import Modal from "../../../../components/common/Modal.vue";
