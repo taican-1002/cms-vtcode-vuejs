@@ -24,14 +24,14 @@
         />
       </div>
       <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label"
-          >Email address <span style="color: #ff0000">*</span></label
+        <label for="exampleInputusername1" class="form-label"
+          >username address <span style="color: #ff0000">*</span></label
         >
         <input
           type="text"
           class="form-control"
           required
-          v-model="editUser.email"
+          v-model="editUser.username"
         />
       </div>
       <div class="mb-3">
@@ -92,7 +92,7 @@ export default {
     return {
       editUser: {
         id: this.user.id,
-        email: this.user.email,
+        username: this.user.username,
         password: this.user.password,
         role: this.user.role,
       },
@@ -108,7 +108,7 @@ export default {
     },
     handleCloseEdit() {
       this.showModal = false;
-      this.editUser.email = this.user.email;
+      this.editUser.username = this.user.username;
       this.editUser.password = this.user.password;
       this.editUser.role = this.user.role;
     },
@@ -118,10 +118,12 @@ export default {
         (item) => item.id == formRoleUser.value
       );
       this.editUser.role = objRoleUser[0];
-      const regexMail = /^\w+([-]?\w+)*@\w+([-]?\w+)*(\.\w{2,3})+$/;
+      // const regexMail = /^\w+([-]?\w+)*@\w+([-]?\w+)*(\.\w{2,3})+$/;
+      const regexUsername = /^[a-zA-Z0-9]{1,}$/;
+
       const regexPass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
       if (this.editUser.password != "" && this.editUser.password.trim()) {
-        if (regexMail.test(this.editUser.email)) {
+        if (regexUsername.test(this.editUser.username)) {
           if (regexPass.test(this.editUser.password)) {
             this.editUserAction(this.editUser);
             localStorage.setItem("userLogin", JSON.stringify(this.editUser));
@@ -130,7 +132,7 @@ export default {
             this.toast.warning("Password invalid");
           }
         } else {
-          this.toast.warning("Email invalid");
+          this.toast.warning("Username invalid");
         }
       } else {
         this.toast.error("Vui lòng điền đầy đủ thông tin");

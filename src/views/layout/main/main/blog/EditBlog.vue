@@ -134,8 +134,6 @@
 import { mapActions } from "vuex";
 import ButtonEdit from "@//views/components/common/ButtonAction/ButtonEdit.vue";
 import { mapGetters } from "vuex";
-// import { QuillEditor } from "@vueup/vue-quill";
-// import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import { useToast } from "vue-toastification";
 import CKEditor from "../CKEditor/CKEditor.vue";
 import Modal from "../../../../components/common/Modal.vue";

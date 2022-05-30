@@ -21,16 +21,16 @@
                   <h1 class="font-weight-bolder text-success text-gradient">
                     Login
                   </h1>
-                  <!-- <p class="mb-0">Enter your email and password to sign in</p> -->
+                  <!-- <p class="mb-0">Enter your username and password to sign in</p> -->
                 </div>
                 <div class="card-body">
                   <div class="text-start">
-                    <label>Email</label>
+                    <label>Username</label>
                     <vsud-input
-                      id="email"
+                      id="username"
                       type="text"
-                      placeholder="Email"
-                      name="email"
+                      placeholder="Username"
+                      name="username"
                     />
                     <label>Password</label>
                     <vsud-input
@@ -100,7 +100,7 @@ export default {
   data() {
     return {
       userLogin: {
-        email: "",
+        username: "",
         password: "",
         role: {},
       },
@@ -129,27 +129,27 @@ export default {
     ...mapMutations(["toggleEveryDisplay", "toggleHideConfig"]),
     handleLogin() {
       // const userLocal = JSON.parse(localStorage.getItem("user"));
-      const email = document.querySelector("#email");
-      const emailValue = email.value.toLowerCase();
+      const username = document.querySelector("#username");
+      const usernameValue = username.value.toLowerCase();
       const password = document.querySelector("#password");
 
       this.users.forEach((item) => {
         if (item.role.name == "admin") {
-          this.userLogin.email = item.email;
+          this.userLogin.username = item.username;
           this.userLogin.password = item.password;
           this.userLogin.role = item.role;
         }
       });
       if (
-        emailValue == this.userLogin.email &&
+        usernameValue == this.userLogin.username &&
         password.value == this.userLogin.password
       ) {
-        this.userLogin.email = emailValue;
+        this.userLogin.username = usernameValue;
         this.userLogin.password = password.value;
         localStorage.setItem("userLogin", JSON.stringify(this.userLogin));
         this.users.forEach((item) => {
           if (
-            item.email == this.userLogin.email &&
+            item.username == this.userLogin.username &&
             item.role.name == this.userLogin.role.name
           ) {
             item.password = this.userLogin.password;
@@ -159,12 +159,6 @@ export default {
         this.toast.success("Đăng nhập thành công!");
         localStorage.setItem("user", JSON.stringify(this.users));
       } else {
-        console.log(this.userLogin.email);
-        console.log(this.userLogin.password);
-        console.log(email.value);
-        console.log(password.value);
-        console.log(emailValue);
-
         this.toast.error("Sai tài khoản hoặc mật khẩu");
       }
     },

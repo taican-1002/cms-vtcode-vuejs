@@ -63,7 +63,7 @@
                 <span class="dropdown-item border-radius-md">
                   <div class="py-1 d-flex">
                     <div class="my-auto">
-                      {{ user.email }}
+                      {{ user.username }}
                     </div>
                   </div>
                 </span>
@@ -135,7 +135,7 @@ export default {
     return {
       showMenu: false,
       user: {
-        email: "",
+        username: "",
         password: "",
         role: {},
       },
@@ -144,7 +144,7 @@ export default {
   props: ["minNav", "textWhite"],
   mounted() {
     const userLogin = JSON.parse(localStorage.getItem("userLogin"));
-    this.user.email = userLogin.email;
+    this.user.username = userLogin.username;
     this.user.password = userLogin.password;
     this.user.role = userLogin.role;
   },

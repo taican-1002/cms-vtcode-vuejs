@@ -4,7 +4,7 @@ const userModule = {
     users: [
       {
         id: 1,
-        email: "admin@gmail.com",
+        username: "admin",
         role: {
           id: 1,
           name: "admin",
@@ -13,7 +13,7 @@ const userModule = {
       },
       {
         id: 2,
-        email: "john@gmail.com",
+        username: "user1",
         role: {
           id: 2,
           name: "client",
@@ -23,7 +23,7 @@ const userModule = {
 
       {
         id: 3,
-        email: "shia@gmai.com",
+        username: "user2",
         role: {
           id: 2,
           name: "client",

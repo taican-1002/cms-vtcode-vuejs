@@ -16,13 +16,13 @@
     <template v-slot:body>
       <div class="mb-3">
         <label class="form-label"
-          >Email address <span style="color: #ff0000">*</span></label
+          >Username <span style="color: #ff0000">*</span></label
         >
         <input
           type="text"
-          class="form-control form-email"
+          class="form-control form-username"
           required
-          v-model="user.email"
+          v-model="user.username"
         />
       </div>
       <div class="mb-3">
@@ -74,24 +74,14 @@ export default {
   components: { ButtonAdd, modal: Modal },
 
   setup() {
-    // Get toast interface
     const toast = useToast();
-
-    // // Use it!
-    // toast("I'm a toast!");
-
-    // // or with options
-    // toast.success("My toast content", {
-    //   timeout: 2000,
-    // });
-
     return { toast };
   },
   data() {
     return {
       user: {
         id: "",
-        email: "",
+        username: "",
         password: "",
         role: {},
       },
@@ -108,19 +98,20 @@ export default {
         (item) => item.name == formRole.value
       );
       if (
-        this.user.email != "" &&
-        this.user.email.trim() &&
+        this.user.username != "" &&
+        this.user.username.trim() &&
         this.user.password != "" &&
         this.user.password.trim() &&
         formRole.value != ""
       ) {
-        const regexMail = /^\w+([-]?\w+)*@\w+([-]?\w+)*(\.\w{2,3})+$/;
+        // const regexMail = /^\w+([-]?\w+)*@\w+([-]?\w+)*(\.\w{2,3})+$/;
+        const regexUsername = /^[a-zA-Z0-9]{1,}$/;
         const regexPass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-        if (regexMail.test(this.user.email)) {
+        if (regexUsername.test(this.user.username)) {
           if (regexPass.test(this.user.password)) {
             this.addUser({
               id: this.user.id,
-              email: this.user.email.toLowerCase(),
+              username: this.user.username.toLowerCase(),
               password: this.user.password,
               role: objRoleUser[0],
             });
@@ -129,7 +120,7 @@ export default {
             userLocal.push(this.user);
             localStorage.setItem("user", JSON.stringify(userLocal));
             this.user.id = "";
-            this.user.email = "";
+            this.user.username = "";
             this.user.password = "";
             formRole.value = "";
             this.user.role = {};
@@ -137,7 +128,7 @@ export default {
             this.toast.warning("Password invalidate");
           }
         } else {
-          this.toast.warning("Email invalidate");
+          this.toast.warning("Username invalidate");
         }
       } else {
         this.toast.error("Vui lòng điền đầy đủ thông tin!");

@@ -45,7 +45,7 @@ export default {
     return {
       deleteUser: {
         id: this.user.id,
-        email: this.user.email,
+        username: this.user.username,
         password: this.user.password,
       },
       showModal: false,

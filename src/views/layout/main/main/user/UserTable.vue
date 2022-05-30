@@ -22,7 +22,7 @@
               <td class="table-id">
                 {{ item.id }}
               </td>
-              <td>{{ item.email }}</td>
+              <td>{{ item.username }}</td>
               <td>{{ item.password }}</td>
               <td>{{ item.role.name }}</td>
               <td class="table-action">
@@ -64,7 +64,7 @@ export default {
         {
           class:
             "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2",
-          name: "email",
+          name: "username",
         },
         {
           class:

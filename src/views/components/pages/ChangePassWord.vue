@@ -87,7 +87,7 @@ export default {
   data() {
     return {
       userChange: {
-        email: "",
+        username: "",
         password: "",
         role: {},
       },
@@ -141,7 +141,7 @@ export default {
             if (rePass.value == newPass.value) {
               this.userChange.password = newPass.value;
               this.users.forEach((item) => {
-                if (item.email == userLogged.email) {
+                if (item.username == userLogged.username) {
                   item.password = this.userChange.password;
                   this.editUserAction(this.userChange);
                   localStorage.setItem(
