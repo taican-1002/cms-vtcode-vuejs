@@ -1,3 +1,3 @@
 ### Account Admin
-- Username: admin@gmail.com
+- Username: admin
 - Password: Admin@123
