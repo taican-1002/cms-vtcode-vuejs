@@ -6,6 +6,7 @@ const blogModule = {
       {
         id: 1,
         title: "Thi công hệ thông mạng công ty tnhh Tân Hùng Thái",
+        seo: "thi-cong-he-thong-mang-cong-ty-tnhh-tan-hung-thai",
         createDate: "6/5/2022",
         category: {
           id: 1,
@@ -24,6 +25,7 @@ const blogModule = {
       {
         id: 2,
         title: "Lập Trình Phần Mềm",
+        seo: "lap-trinh-phan-mem",
         createDate: "5/5/2022",
         category: {
           id: 2,

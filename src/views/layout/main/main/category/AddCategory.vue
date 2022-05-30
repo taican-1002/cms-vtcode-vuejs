@@ -78,15 +78,6 @@ export default {
     ...mapActions(["addCategory"]),
 
     ToSeoUrl(str) {
-      // make the url lowercase
-      // var encodedUrl = url.toLowerCase();
-      // console.log(
-      //   url
-      //     .split(" ")
-      //     .normalize("NFD")
-      //     .replace(/[\u0300-\u036f]/g, "")
-      // );
-
       str = str.toLowerCase();
       str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
       str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");

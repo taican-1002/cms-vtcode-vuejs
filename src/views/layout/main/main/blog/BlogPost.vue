@@ -32,6 +32,9 @@
             <td class="align-middle text-sm">
               {{ item.category.name }}
             </td>
+            <td class="align-middle">
+              {{ item.seo }}
+            </td>
             <td class="align-middle">{{ item.author.role }}</td>
             <td class="align-middle">
               <img :src="item.image" alt="" class="blog-post__img" />
@@ -96,6 +99,11 @@ export default {
           class:
             "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2",
           name: "category",
+        },
+        {
+          class:
+            "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2",
+          name: "seo",
         },
         {
           class:
@@ -170,13 +178,13 @@ export default {
 .blog-post__id {
   padding: 0.75rem 1rem !important;
 }
-.blog-post__title {
+/* .blog-post__title {
   max-width: 20rem;
   height: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: break-spaces;
-}
+} */
 /* .blog-post__title p {
   white-space: nowrap;
   overflow: hidden;

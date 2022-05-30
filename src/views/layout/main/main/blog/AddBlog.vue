@@ -36,7 +36,17 @@
         <label for="exampleInputEmail1" class="form-label"
           >Title <span style="color: #ff0000">*</span></label
         >
-        <input type="text" class="form-control" required v-model="blog.title" />
+        <input
+          type="text"
+          class="form-control"
+          required
+          v-model="blog.title"
+          @change="ToSeoUrl(blog.title)"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Seo</label>
+        <input type="text" class="form-control" disabled v-model="blog.seo" />
       </div>
       <div class="mb-3">
         <label for="validationDefault04" class="form-label"
@@ -132,6 +142,7 @@ export default {
       blog: {
         title: "",
         category: {},
+        seo: "",
         author: {},
         image: "",
         description: "",
@@ -149,6 +160,19 @@ export default {
   },
   methods: {
     ...mapActions(["addBlog"]),
+    ToSeoUrl(str) {
+      str = str.toLowerCase();
+      str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+      str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+      str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+      str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+      str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+      str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+      str = str.replace(/đ/g, "d");
+      str = str.replace(/\W+/g, " ");
+      str = str.replace(/\s/g, "-");
+      this.blog.seo = str;
+    },
     getContent(val) {
       // console.log(val);
       this.ckeditor = val;
@@ -174,6 +198,7 @@ export default {
         this.addBlog({
           id: this.blog.id,
           title: this.blog.title,
+          seo: this.blog.seo,
           category: objCategory[0],
           author: objAuthor[0],
           description: this.ckeditor,
@@ -184,6 +209,7 @@ export default {
         this.showModal = false;
         this.blog.id = "";
         this.blog.title = "";
+        this.blog.seo = "";
         this.blog.category = {};
         this.blog.author = {};
         this.previewImage = noImage;

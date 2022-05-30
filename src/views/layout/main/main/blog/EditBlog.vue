@@ -49,7 +49,17 @@
           type="text"
           class="form-control"
           v-model="blogEdit.title"
+          @change="ToSeoUrl(this.blogEdit.title)"
           required
+        />
+      </div>
+      <div class="mb-3 text-left">
+        <label class="form-label">Seo</label>
+        <input
+          type="text"
+          class="form-control"
+          v-model="blogEdit.seo"
+          disabled
         />
       </div>
 
@@ -144,6 +154,7 @@ export default {
       blogEdit: {
         id: this.blog.id,
         title: this.blog.title,
+        seo: this.blog.seo,
         category: this.blog.category,
         description: this.blog.description,
         author: this.blog.author,
@@ -157,6 +168,19 @@ export default {
   props: ["blog"],
   methods: {
     ...mapActions(["editBlogAction"]),
+    ToSeoUrl(str) {
+      str = str.toLowerCase();
+      str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+      str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+      str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+      str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+      str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+      str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+      str = str.replace(/đ/g, "d");
+      str = str.replace(/\W+/g, " ");
+      str = str.replace(/\s/g, "-");
+      this.blogEdit.seo = str;
+    },
     handleEdit() {
       this.showModal = true;
     },
@@ -164,6 +188,7 @@ export default {
       this.showModal = false;
       this.blogEdit.title = this.blog.title;
       this.blogEdit.description = this.blog.description;
+      this.blogEdit.seo = this.blog.seo;
       this.previewImage = this.blog.image;
     },
     handleSaveEdit() {

@@ -86,16 +86,7 @@ export default {
   name: "AddStaff",
   components: { ButtonAdd, modal: Modal },
   setup() {
-    // Get toast interface
     const toast = useToast();
-
-    // // Use it!
-    // toast("I'm a toast!");
-
-    // // or with options
-    // toast.success("My toast content", {
-    //   timeout: 2000,
-    // });
 
     return { toast };
   },

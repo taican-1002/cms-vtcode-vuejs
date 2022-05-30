@@ -30,7 +30,7 @@
           class="form-select form-select__format"
           v-model="this.editItemFollowFormat"
         >
-          <option selected value="">Choose format</option>
+          <option selected value="" disabled>Choose format</option>
           <option value="fab">fab</option>
           <option value="fas">fas</option>
           <option value="far">far</option>
@@ -131,35 +131,6 @@ export default {
 }
 .mr-2 {
   margin-right: 1rem;
-}
-.modal-wrap,
-.modal-content {
-  position: absolute;
-}
-.modal-mask {
-  position: fixed;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: table;
-  transition: opacity 0.3s ease;
-}
-
-.modal-wrapper {
-  display: table-cell;
-  /* vertical-align: middle; */
-}
-/* Important part */
-.modal-dialog {
-  overflow-y: initial !important;
-  margin: 0.75rem auto !important;
-}
-.modal-main__body {
-  /* height: 80vh; */
-  overflow-y: auto;
 }
 .form-label {
   float: left;
